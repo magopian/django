@@ -264,30 +264,90 @@ class GeometryField(Field):
         """
         return connection.ops.get_geom_placeholder(self, value)
 
+
 # The OpenGIS Geometry Type Fields
 class PointField(GeometryField):
     geom_type = 'POINT'
     description = _("Point")
 
+    def formfield(self, **kwargs):
+        defaults = {'form_class' : forms.PointField,
+                    'null' : self.null,
+                    'geom_type' : self.geom_type,
+                    'srid' : self.srid,
+                    }
+        defaults.update(kwargs)
+        return super(PointField, self).formfield(**defaults)
+
+
 class LineStringField(GeometryField):
     geom_type = 'LINESTRING'
     description = _("Line string")
+
+    def formfield(self, **kwargs):
+        defaults = {'form_class' : forms.LineStringField,
+                    'null' : self.null,
+                    'geom_type' : self.geom_type,
+                    'srid' : self.srid,
+                    }
+        defaults.update(kwargs)
+        return super(LineStringField, self).formfield(**defaults)
+
 
 class PolygonField(GeometryField):
     geom_type = 'POLYGON'
     description = _("Polygon")
 
+    def formfield(self, **kwargs):
+        defaults = {'form_class' : forms.PolygonField,
+                    'null' : self.null,
+                    'geom_type' : self.geom_type,
+                    'srid' : self.srid,
+                    }
+        defaults.update(kwargs)
+        return super(PolygonField, self).formfield(**defaults)
+
+
 class MultiPointField(GeometryField):
     geom_type = 'MULTIPOINT'
     description = _("Multi-point")
+
+    def formfield(self, **kwargs):
+        defaults = {'form_class' : forms.MultiPointField,
+                    'null' : self.null,
+                    'geom_type' : self.geom_type,
+                    'srid' : self.srid,
+                    }
+        defaults.update(kwargs)
+        return super(MultiPointField, self).formfield(**defaults)
+
 
 class MultiLineStringField(GeometryField):
     geom_type = 'MULTILINESTRING'
     description = _("Multi-line string")
 
+    def formfield(self, **kwargs):
+        defaults = {'form_class' : forms.MultiLineStringField,
+                    'null' : self.null,
+                    'geom_type' : self.geom_type,
+                    'srid' : self.srid,
+                    }
+        defaults.update(kwargs)
+        return super(MultiLineStringField, self).formfield(**defaults)
+
 class MultiPolygonField(GeometryField):
     geom_type = 'MULTIPOLYGON'
     description = _("Multi polygon")
+
+    def formfield(self, **kwargs):
+        defaults = {'form_class' : forms.MultiPolygonField,
+                    'null' : self.null,
+                    'geom_type' : self.geom_type,
+                    'srid' : self.srid,
+                    }
+        defaults.update(kwargs)
+        return super(MultiPolygonField, self).formfield(**defaults)
+
 
 class GeometryCollectionField(GeometryField):
     geom_type = 'GEOMETRYCOLLECTION'

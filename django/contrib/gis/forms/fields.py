@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.gis.forms.widgets import *
 from django.utils.translation import ugettext_lazy as _
 
 # While this couples the geographic forms to the GEOS library,
@@ -65,3 +66,27 @@ class GeometryField(forms.Field):
                     raise forms.ValidationError(self.error_messages['transform_error'])
 
         return geom
+
+
+class PointField(GeometryField):
+    widget = PointWidget
+
+
+class MultiPointField(GeometryField):
+    widget = MultiPointWidget
+
+
+class LineStringField(GeometryField):
+    widget = LineStringWidget
+
+
+class MultiLineStringField(GeometryField):
+    widget = MultiLineStringWidget
+
+
+class PolygonField(GeometryField):
+    widget = PolygonWidget
+
+
+class MultiPolygonField(GeometryField):
+    widget = MultiPolygonWidget
