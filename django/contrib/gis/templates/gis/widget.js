@@ -141,7 +141,7 @@ var {{ module }} = {};
 	{{ module }}.map.addLayer({{ module }}.layers.base);
 	{% block extra_layers %}{% endblock %}
 	{% if is_linestring %}OpenLayers.Feature.Vector.style["default"]["strokeWidth"] = 3; // Default too thin for linestrings. {% endif %}
-	{{ module }}.layers.vector = new OpenLayers.Layer.Vector(" {{ field_name }}");
+	{{ module }}.layers.vector = new OpenLayers.Layer.Vector(" {{ name }}");
 	{{ module }}.map.addLayer({{ module }}.layers.vector);
 	// Read WKT from the text field.
 	var wkt = document.getElementById('{{ id }}').value;
