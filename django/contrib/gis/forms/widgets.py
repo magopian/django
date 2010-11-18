@@ -148,7 +148,7 @@ class GeometryWidget(forms.Textarea):
                 elif option_type in (str,):
                     value = '"%s"' % self.params[param_name]
                 else:
-                    raise TypeError, "Unrecognized option type: '%s'" % option_type
+                    raise TypeError("Unrecognized option type: '%s'" % option_type)
                 map_options[js_name] = value
         return map_options
 
@@ -198,7 +198,6 @@ if gdal.HAS_GDAL:
 
         class Media:
             js = ('http://www.openstreetmap.org/openlayers/OpenStreetMap.js',)
-
 
     class GMapWidget(GeometryWidget):
         map_srid = 900913
