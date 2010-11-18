@@ -140,12 +140,12 @@ var {{ module }} = {};
 	{{ module }}.layers.base = {% block base_layer %}new OpenLayers.Layer.WMS( "{{ wms_name }}", "{{ wms_url }}", {layers: '{{ wms_layer }}'} );{% endblock %}
 	{{ module }}.map.addLayer({{ module }}.layers.base);
 	{% block extra_layers %}{% endblock %}
-	var styleMap = new OpenLayers.StyleMap(OpenLayers.Util.applyDefaults({
+	var styleMap = new OpenLayers.StyleMap({'default': OpenLayers.Util.applyDefaults({
 		{% if is_linestring %}'strokeWidth': 3, // default too thin for a linestring
 		{% endif %}'fillColor': "#{{ color }}",
 		'fillOpacity': {{ opacity }},
 		'strokeColor': '#{{ color }}'},
-		OpenLayers.Feature.Vector.style["default"]));
+		OpenLayers.Feature.Vector.style["default"])});
 	{{ module }}.layers.vector = new OpenLayers.Layer.Vector(" {{ name }}", {styleMap: styleMap});
 	{{ module }}.map.addLayer({{ module }}.layers.vector);
 	// Read WKT from the text field.
