@@ -1,2 +1,8 @@
 {% extends 'gis/widget.html' %}
+{% block extrastyle %}
+{{ block.super }}
+<style type="text/css">
+	.olControlAttribution { bottom: 3px; }
+</style>
+{% endblock %}
 {% block js_widget %}{% include 'gis/osm.js' %}{% endblock %}
