@@ -15,7 +15,7 @@ var {{ module }} = {};
 {% endblock %}
 
 {{ module }}.get_ewkt = function(feat) {
-	return 'SRID={{ srid }};' + {{ module }}.wkt_f.write(feat);
+	return 'SRID={{ map_srid }};' + {{ module }}.wkt_f.write(feat);
 };
 
 {{ module }}.read_wkt = function(wkt) {

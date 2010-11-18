@@ -12,26 +12,35 @@ class GeometryWidget(forms.Textarea):
     obtained by subclassing this base widget.
     """
     # Public API
-    map_template = 'gis/widget.html'
-    map_width = 600
-    map_height = 400
     color = 'ee9900'
-    opacity = 0.4
-    default_lon = 2 # 0
-    default_lat = 47 # 0
-    default_zoom = 5 # 4
-    point_zoom = 14
-    srid = 4326
-
-    modifiable = True
-    scrollable = True
+    default_lon = 0
+    default_lat = 0
+    default_zoom = 4
     display_wkt = False
     layerswitcher = True
-
-    # Semi-public, doesn't apply for google maps for instance
+    map_width = 600
+    map_height = 400
+    map_srid = 4326
+    map_template = 'gis/widget.html'
+    max_extent = False
+    max_resolution = False
+    max_zoom = False
+    min_zoom = False
+    modifiable = False
+    mouse_position = True
+    num_zoom = 18
+    opacity = 0.4
+    point_zoom = num_zoom - 6
+    scale_text = True
+    scrollable = True
+    units = False
     wms_url = 'http://labs.metacarta.com/wms/vmap0'
     wms_layer = 'basic'
     wms_name = 'OpenLayers WMS'
+
+    # Deprecated?
+    debug = False
+    display_srid = False
 
     # Internal stuff, not supposed to be overriden
     is_point = False
@@ -43,33 +52,20 @@ class GeometryWidget(forms.Textarea):
     def __init__(self, *args, **kwargs):
         super(GeometryWidget, self).__init__(*args, **kwargs)
         attrs = kwargs.pop('attrs', {})
+        self.params = {}
 
-        self.params = {
-            'map_width': attrs.pop('map_width', self.map_width),
-            'map_height': attrs.pop('map_height', self.map_height),
-            'color': attrs.pop('color', self.color),
-            'opacity': attrs.pop('opacity', self.opacity),
-            'default_lon': attrs.pop('default_lon', self.default_lon),
-            'default_lat': attrs.pop('default_lat', self.default_lat),
-            'default_zoom': attrs.pop('default_zoom', self.default_zoom),
-            'point_zoom': attrs.pop('point_zoom', self.point_zoom),
-            'srid': attrs.pop('srid', self.srid),
-            'scrollable': attrs.pop('scrollable', self.scrollable),
+        for key in ('is_polygon', 'is_linestring', 'is_point',
+                    'is_collection', 'collection_type'):
+            self.params[key] = getattr(self, key)
 
-            'wms_url': self.wms_url,
-            'wms_name': self.wms_name,
-            'wms_layer': self.wms_layer,
-            'geom_type': gdal.OGRGeomType(self.geom_type),
-            'layerswitcher': self.layerswitcher,
-
-            'modifiable': self.modifiable,
-            'display_wkt': self.display_wkt,
-
-            'is_polygon': self.is_polygon,
-            'is_linestring': self.is_linestring,
-            'is_point': self.is_point,
-            'is_collection': self.is_collection,
-        }
+        for key in ('color', 'default_lon', 'default_lat', 'default_zoom',
+                    'display_wkt', 'layerswitcher', 'map_width', 'map_height',
+                    'map_srid', 'map_template', 'max_extent', 'max_resolution',
+                    'max_zoom', 'min_zoom', 'modifiable', 'mouse_position',
+                    'num_zoom', 'opacity', 'point_zoom', 'scale_text',
+                    'scrollable', 'units', 'wms_url', 'wms_layer', 'wms_name'):
+            self.params[key] = attrs.pop(key, getattr(self, key))
+        self.params['geom_type'] = gdal.OGRGeomType(self.geom_type)
 
     class Media:
         js = ('http://openlayers.org/api/2.10/OpenLayers.js',)
@@ -95,7 +91,7 @@ class GeometryWidget(forms.Textarea):
         # Defaulting the WKT value to a blank string
         wkt = ''
         if value:
-            srid = self.params['srid']
+            srid = self.params['map_srid']
             if value.srid != srid:
                 try:
                     ogr = value.ogr
@@ -192,11 +188,11 @@ class MultiPolygonWidget(PolygonWidget):
 
 if gdal.HAS_GDAL:
     class OSMWidget(GeometryWidget):
+        map_srid = 900913
         map_template = 'gis/osm.html'
-        num_zoom = 20
-        srid = 900913
         max_extent = '-20037508,-20037508,20037508,20037508'
         max_resolution = '156543.0339'
+        num_zoom = 20
         point_zoom = num_zoom - 6
         units = 'm'
 
@@ -205,9 +201,9 @@ if gdal.HAS_GDAL:
 
 
     class GMapWidget(GeometryWidget):
+        map_srid = 900913
         map_template = 'gis/google.html'
         num_zoom = 20
-        srid = 900913
         point_zoom = num_zoom - 6
         units = 'm'
 
