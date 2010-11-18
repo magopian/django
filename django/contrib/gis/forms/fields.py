@@ -1,5 +1,9 @@
 from django import forms
-from django.contrib.gis.forms.widgets import *
+from django.contrib.gis.forms.widgets import (PointWidget, MultiPointWidget,
+                                              LineStringWidget,
+                                              MultiLineStringWidget,
+                                              PolygonWidget,
+                                              MultiPolygonWidget)
 from django.utils.translation import ugettext_lazy as _
 
 # While this couples the geographic forms to the GEOS library,

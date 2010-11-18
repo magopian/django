@@ -1,7 +1,6 @@
 from django import forms
 from django.conf import settings
-from django.contrib.gis import gdal
-from django.contrib.gis.geos import GEOSGeometry, GEOSException
+from django.contrib.gis import gdal, geos
 from django.template import loader
 from django.utils import translation
 
@@ -78,8 +77,8 @@ class GeometryWidget(forms.Textarea):
         # field) then just reconstruct the Geometry.
         if isinstance(value, basestring):
             try:
-                value = GEOSGeometry(value)
-            except (GEOSException, ValueError):
+                value = geos.GEOSGeometry(value)
+            except (geos.GEOSException, ValueError):
                 value = None
 
         if value and value.geom_type.upper() != self.geom_type:
