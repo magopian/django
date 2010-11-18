@@ -110,8 +110,6 @@ class GeometryWidget(forms.Textarea):
             'LANGUAGE_BIDI': translation.get_language_bidi(),
         }
         context.update(self.params)
-        from pprint import pprint
-        pprint(context)
         return loader.render_to_string(self.map_template, context)
 
     def map_options(self):
