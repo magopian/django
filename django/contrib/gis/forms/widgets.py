@@ -24,6 +24,7 @@ class GeometryWidget(forms.Textarea):
     srid = 4326
 
     modifiable = True
+    scrollable = True
     display_wkt = False
     layerswitcher = True
 
@@ -53,6 +54,8 @@ class GeometryWidget(forms.Textarea):
             'default_zoom': attrs.pop('default_zoom', self.default_zoom),
             'point_zoom': attrs.pop('point_zoom', self.point_zoom),
             'srid': attrs.pop('srid', self.srid),
+            'scrollable': attrs.pop('scrollable', self.scrollable),
+
             'wms_url': self.wms_url,
             'wms_name': self.wms_name,
             'wms_layer': self.wms_layer,
@@ -196,7 +199,20 @@ if gdal.HAS_GDAL:
         max_resolution = '156543.0339'
         point_zoom = num_zoom - 6
         units = 'm'
-        color = '000'
 
         class Media:
             js = ('http://www.openstreetmap.org/openlayers/OpenStreetMap.js',)
+
+
+    class GMapWidget(GeometryWidget):
+        map_template = 'gis/google.html'
+        num_zoom = 20
+        srid = 900913
+        point_zoom = num_zoom - 6
+        units = 'm'
+
+        class Media:
+            js = (
+                'http://openlayers.org/dev/OpenLayers.js',
+                'http://maps.google.com/maps/api/js?sensor=false',
+            )
