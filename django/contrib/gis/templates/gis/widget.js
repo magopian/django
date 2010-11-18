@@ -140,8 +140,13 @@ var {{ module }} = {};
 	{{ module }}.layers.base = {% block base_layer %}new OpenLayers.Layer.WMS( "{{ wms_name }}", "{{ wms_url }}", {layers: '{{ wms_layer }}'} );{% endblock %}
 	{{ module }}.map.addLayer({{ module }}.layers.base);
 	{% block extra_layers %}{% endblock %}
-	{% if is_linestring %}OpenLayers.Feature.Vector.style["default"]["strokeWidth"] = 3; // Default too thin for linestrings. {% endif %}
-	{{ module }}.layers.vector = new OpenLayers.Layer.Vector(" {{ name }}");
+	var styleMap = new OpenLayers.StyleMap(OpenLayers.Util.applyDefaults({
+		{% if is_linestring %}'strokeWidth': 3, // default too thin for a linestring
+		{% endif %}'fillColor': "#{{ color }}",
+		'fillOpacity': {{ opacity }},
+		'strokeColor': '#{{ color }}'},
+		OpenLayers.Feature.Vector.style["default"]));
+	{{ module }}.layers.vector = new OpenLayers.Layer.Vector(" {{ name }}", {styleMap: styleMap});
 	{{ module }}.map.addLayer({{ module }}.layers.vector);
 	// Read WKT from the text field.
 	var wkt = document.getElementById('{{ id }}').value;
