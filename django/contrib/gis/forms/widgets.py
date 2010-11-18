@@ -1,6 +1,6 @@
 from django import forms
 from django.conf import settings
-from django.contrib.gis.gdal import OGRGeomType, OGRException
+from django.contrib.gis import gdal
 from django.contrib.gis.geos import GEOSGeometry, GEOSException
 from django.template import loader
 from django.utils import translation
@@ -25,6 +25,7 @@ class GeometryWidget(forms.Textarea):
 
     modifiable = True
     display_wkt = False
+    layerswitcher = True
 
     # Semi-public, doesn't apply for google maps for instance
     wms_url = 'http://labs.metacarta.com/wms/vmap0'
@@ -55,7 +56,8 @@ class GeometryWidget(forms.Textarea):
             'wms_url': self.wms_url,
             'wms_name': self.wms_name,
             'wms_layer': self.wms_layer,
-            'geom_type': OGRGeomType(self.geom_type),
+            'geom_type': gdal.OGRGeomType(self.geom_type),
+            'layerswitcher': self.layerswitcher,
 
             'modifiable': self.modifiable,
             'display_wkt': self.display_wkt,
@@ -96,7 +98,7 @@ class GeometryWidget(forms.Textarea):
                     ogr = value.ogr
                     ogr.transform(srid)
                     wkt = ogr.wkt
-                except OGRException:
+                except gdal.OGRException:
                     pass  # wkt left as an empty string
             else:
                 wkt = value.wkt
@@ -183,3 +185,18 @@ class MultiPolygonWidget(PolygonWidget):
     is_collection = True
     collection_type = 'MultiPolygon'
     geom_type = 'MULTIPOLYGON'
+
+
+if gdal.HAS_GDAL:
+    class OSMWidget(GeometryWidget):
+        map_template = 'gis/osm.html'
+        num_zoom = 20
+        srid = 900913
+        max_extent = '-20037508,-20037508,20037508,20037508'
+        max_resolution = '156543.0339'
+        point_zoom = num_zoom - 6
+        units = 'm'
+        color = '000'
+
+        class Media:
+            js = ('http://www.openstreetmap.org/openlayers/OpenStreetMap.js',)

@@ -38,16 +38,3 @@ class GeoModelAdmin(ModelAdmin):
     wms_layer = 'basic'
     wms_name = 'OpenLayers WMS'
     debug = False
-
-
-from django.contrib.gis import gdal
-if gdal.HAS_GDAL:
-    class OSMGeoAdmin(GeoModelAdmin):
-        map_template = 'gis/admin/osm.html'
-        extra_js = ['http://www.openstreetmap.org/openlayers/OpenStreetMap.js']
-        num_zoom = 20
-        map_srid = 900913
-        max_extent = '-20037508,-20037508,20037508,20037508'
-        max_resolution = '156543.0339'
-        point_zoom = num_zoom - 6
-        units = 'm'
