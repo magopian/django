@@ -1,9 +1,15 @@
 from django.forms import *
-from django.contrib.gis.forms.fields import (GeometryField, PointField,
-                                             MultiPointField, LineStringField,
+from django.contrib.gis.forms.fields import (GeometryField,
+                                             GeometryCollectionField,
+                                             PointField,
+                                             MultiPointField,
+                                             LineStringField,
                                              MultiLineStringField,
-                                             PolygonField, MultiPolygonField)
-from django.contrib.gis.forms.widgets import (GeometryWidget, PointWidget,
+                                             PolygonField,
+                                             MultiPolygonField)
+from django.contrib.gis.forms.widgets import (GeometryWidget,
+                                              GeometryCollectionWidget,
+                                              PointWidget,
                                               MultiPointWidget,
                                               LineStringWidget,
                                               MultiLineStringWidget,

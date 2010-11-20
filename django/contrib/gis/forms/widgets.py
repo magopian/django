@@ -26,7 +26,7 @@ class GeometryWidget(forms.Textarea):
     max_resolution = False
     max_zoom = False
     min_zoom = False
-    modifiable = False
+    modifiable = True
     mouse_position = True
     num_zoom = 18
     opacity = 0.4
@@ -47,6 +47,7 @@ class GeometryWidget(forms.Textarea):
     is_polygon = False
     is_collection = False
     collection_type = 'None'
+    geom_type = 'GEOMETRY'
 
     def __init__(self, *args, **kwargs):
         super(GeometryWidget, self).__init__(*args, **kwargs)
@@ -66,6 +67,8 @@ class GeometryWidget(forms.Textarea):
                     'wms_url', 'wms_layer', 'wms_name'):
             self.params[key] = attrs.pop(key, getattr(self, key))
         self.params['geom_type'] = gdal.OGRGeomType(self.geom_type)
+        if self.geom_type == 'GEOMETRYCOLLECTION':
+            self.params['geom_type'] = 'Collection'
 
     class Media:
         js = ('http://openlayers.org/api/2.10/OpenLayers.js',)
@@ -82,7 +85,7 @@ class GeometryWidget(forms.Textarea):
             except (geos.GEOSException, ValueError):
                 value = None
 
-        if value and value.geom_type.upper() != self.geom_type:
+        if value and value.geom_type.upper() != self.geom_type and self.geom_type != 'GEOMETRY':
             value = None
 
         # Constructing the dictionary of the map options
@@ -182,6 +185,12 @@ class MultiPolygonWidget(PolygonWidget):
     is_collection = True
     collection_type = 'MultiPolygon'
     geom_type = 'MULTIPOLYGON'
+
+
+class GeometryCollectionWidget(GeometryWidget):
+    is_collection = True
+    collection_type = 'Any'
+    geom_type = 'GEOMETRYCOLLECTION'
 
 
 if gdal.HAS_GDAL:

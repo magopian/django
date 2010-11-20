@@ -1,5 +1,8 @@
 from django import forms
-from django.contrib.gis.forms.widgets import (PointWidget, MultiPointWidget,
+from django.contrib.gis.forms.widgets import (GeometryWidget,
+                                              GeometryCollectionWidget,
+                                              PointWidget,
+                                              MultiPointWidget,
                                               LineStringWidget,
                                               MultiLineStringWidget,
                                               PolygonWidget,
@@ -17,7 +20,7 @@ class GeometryField(forms.Field):
     accepted by GEOSGeometry is accepted by this form.  By default,
     this includes WKT, HEXEWKB, WKB (in a buffer), and GeoJSON.
     """
-    widget = forms.Textarea
+    widget = GeometryWidget
 
     default_error_messages = {
         'no_geom': _(u'No geometry value provided.'),
@@ -95,3 +98,7 @@ class PolygonField(GeometryField):
 
 class MultiPolygonField(GeometryField):
     widget = MultiPolygonWidget
+
+
+class GeometryCollectionField(GeometryField):
+    widget = GeometryCollectionWidget

@@ -108,7 +108,7 @@ var {{ module }} = {};
 // Create an array of controls based on geometry type
 {{ module }}.getControls = function(lyr) {
 	{{ module }}.panel = new OpenLayers.Control.Panel({'displayClass': 'olControlEditingToolbar'});
-	var nav = new OpenLayers.Control.Navigation();
+	var nav = [new OpenLayers.Control.Navigation()];
 	var draw_ctl;
 	if ({{ module }}.is_linestring) {
 		draw_ctl = new OpenLayers.Control.DrawFeature(lyr, OpenLayers.Handler.Path, {'displayClass': 'olControlDrawFeaturePath'});
@@ -116,15 +116,20 @@ var {{ module }} = {};
 		draw_ctl = new OpenLayers.Control.DrawFeature(lyr, OpenLayers.Handler.Polygon, {'displayClass': 'olControlDrawFeaturePolygon'});
 	} else if ({{ module }}.is_point) {
 		draw_ctl = new OpenLayers.Control.DrawFeature(lyr, OpenLayers.Handler.Point, {'displayClass': 'olControlDrawFeaturePoint'});
+	} else { // generic geometry
+		var point_ctl = new OpenLayers.Control.DrawFeature(lyr, OpenLayers.Handler.Point, {'displayClass': 'olControlDrawFeaturePoint'});
+		var path_ctl = new OpenLayers.Control.DrawFeature(lyr, OpenLayers.Handler.Path, {'displayClass': 'olControlDrawFeaturePath'});
+		var poly_ctl = new OpenLayers.Control.DrawFeature(lyr, OpenLayers.Handler.Polygon, {'displayClass': 'olControlDrawFeaturePolygon'});
+		draw_ctl = [point_ctl, path_ctl, poly_ctl];
 	}
 	if ({{ module }}.modifiable) {
-		var mod = new OpenLayers.Control.ModifyFeature(lyr, {'displayClass': 'olControlModifyFeature'});
-		{{ module }}.controls = [nav, draw_ctl, mod];
+		var mod = [new OpenLayers.Control.ModifyFeature(lyr, {'displayClass': 'olControlModifyFeature'})];
+		{{ module }}.controls = nav.concat(draw_ctl, mod);
 	} else {
 		if(!lyr.features.length) {
-			{{ module }}.controls = [nav, draw_ctl];
+			{{ module }}.controls = nav.concat(draw_ctl);
 		} else {
-			{{ module }}.controls = [nav];
+			{{ module }}.controls = nav;
 		}
 	}
 };

@@ -101,6 +101,15 @@ class GeometryField(Field):
 
         super(GeometryField, self).__init__(**kwargs)
 
+    def formfield(self, **kwargs):
+        defaults = {'form_class' : forms.GeometryField,
+                    'null' : self.null,
+                    'geom_type' : self.geom_type,
+                    'srid' : self.srid,
+                    }
+        defaults.update(kwargs)
+        return super(GeometryField, self).formfield(**defaults)
+
     # The following functions are used to get the units, their name, and
     # the spheroid corresponding to the SRID of the GeometryField.
     def _get_srid_info(self, connection):
@@ -335,6 +344,7 @@ class MultiLineStringField(GeometryField):
         defaults.update(kwargs)
         return super(MultiLineStringField, self).formfield(**defaults)
 
+
 class MultiPolygonField(GeometryField):
     geom_type = 'MULTIPOLYGON'
     description = _("Multi polygon")
@@ -352,3 +362,12 @@ class MultiPolygonField(GeometryField):
 class GeometryCollectionField(GeometryField):
     geom_type = 'GEOMETRYCOLLECTION'
     description = _("Geometry collection")
+
+    def formfield(self, **kwargs):
+        defaults = {'form_class' : forms.GeometryCollectionField,
+                    'null' : self.null,
+                    'geom_type' : self.geom_type,
+                    'srid' : self.srid,
+                    }
+        defaults.update(kwargs)
+        return super(GeometryCollectionField, self).formfield(**defaults)
