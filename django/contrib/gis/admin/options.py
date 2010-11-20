@@ -1,11 +1,10 @@
 from django.contrib.admin import ModelAdmin
-from django.contrib.gis.forms import GeometryWidget, GMapWidget, OSMWidget
+from django.contrib.gis.forms import GeometryWidget
 from django.contrib.gis.db import models
 
 
 class GeoModelAdmin(ModelAdmin):
-    widget = GMapWidget
-    map_width = 800
+    widget = GeometryWidget
 
     def formfield_for_dbfield(self, db_field, **kwargs):
         if isinstance(db_field, models.GeometryField):
