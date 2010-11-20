@@ -49,6 +49,15 @@ class GeometryWidget(forms.Textarea):
     collection_type = 'None'
     geom_type = 'GEOMETRY'
 
+    map_attrs = (
+        'color', 'default_lon', 'default_lat', 'default_zoom', 'display_srid',
+        'display_wkt', 'layerswitcher', 'map_width', 'map_height', 'map_srid',
+        'map_template', 'max_extent', 'max_resolution', 'max_zoom', 'min_zoom',
+        'modifiable', 'mouse_position', 'num_zoom', 'opacity', 'point_zoom',
+        'scale_text', 'scrollable', 'units', 'wms_url', 'wms_layer',
+        'wms_name',
+    )
+
     def __init__(self, *args, **kwargs):
         super(GeometryWidget, self).__init__(*args, **kwargs)
         attrs = kwargs.pop('attrs', {})
@@ -58,13 +67,7 @@ class GeometryWidget(forms.Textarea):
                     'is_collection', 'collection_type'):
             self.params[key] = getattr(self, key)
 
-        for key in ('color', 'default_lon', 'default_lat', 'default_zoom',
-                    'display_srid', 'display_wkt', 'layerswitcher',
-                    'map_width', 'map_height', 'map_srid', 'map_template',
-                    'max_extent', 'max_resolution', 'max_zoom', 'min_zoom',
-                    'modifiable', 'mouse_position', 'num_zoom', 'opacity',
-                    'point_zoom', 'scale_text', 'scrollable', 'units',
-                    'wms_url', 'wms_layer', 'wms_name'):
+        for key in self.map_attrs:
             self.params[key] = attrs.pop(key, getattr(self, key))
         self.params['geom_type'] = gdal.OGRGeomType(self.geom_type)
         if self.geom_type == 'GEOMETRYCOLLECTION':
