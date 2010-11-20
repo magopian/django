@@ -15,6 +15,7 @@ class GeometryWidget(forms.Textarea):
     default_lon = 0
     default_lat = 0
     default_zoom = 4
+    display_srid = False
     display_wkt = False
     layerswitcher = True
     map_width = 600
@@ -39,7 +40,6 @@ class GeometryWidget(forms.Textarea):
 
     # Deprecated?
     debug = False
-    display_srid = False
 
     # Internal stuff, not supposed to be overriden
     is_point = False
@@ -58,11 +58,12 @@ class GeometryWidget(forms.Textarea):
             self.params[key] = getattr(self, key)
 
         for key in ('color', 'default_lon', 'default_lat', 'default_zoom',
-                    'display_wkt', 'layerswitcher', 'map_width', 'map_height',
-                    'map_srid', 'map_template', 'max_extent', 'max_resolution',
-                    'max_zoom', 'min_zoom', 'modifiable', 'mouse_position',
-                    'num_zoom', 'opacity', 'point_zoom', 'scale_text',
-                    'scrollable', 'units', 'wms_url', 'wms_layer', 'wms_name'):
+                    'display_srid', 'display_wkt', 'layerswitcher',
+                    'map_width', 'map_height', 'map_srid', 'map_template',
+                    'max_extent', 'max_resolution', 'max_zoom', 'min_zoom',
+                    'modifiable', 'mouse_position', 'num_zoom', 'opacity',
+                    'point_zoom', 'scale_text', 'scrollable', 'units',
+                    'wms_url', 'wms_layer', 'wms_name'):
             self.params[key] = attrs.pop(key, getattr(self, key))
         self.params['geom_type'] = gdal.OGRGeomType(self.geom_type)
 

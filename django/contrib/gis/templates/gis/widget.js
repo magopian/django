@@ -87,7 +87,7 @@ var {{ module }} = {};
 {{ module }}.clearFeatures = function () {
 	{{ module }}.deleteFeatures();
 	document.getElementById('{{ id }}').value = '';
-	{{ module }}.map.setCenter(new OpenLayers.LonLat({{ default_lon }}, {{ default_lat }}), {{ default_zoom }});
+	{{ module }}.map.setCenter(new OpenLayers.LonLat({{ default_lon }}, {{ default_lat }}){% if display_srid %}.transform({{ module }}.map.getProjectionObject()){% endif %}, {{ default_zoom }});
 };
 
 // Add Select control
@@ -170,7 +170,7 @@ var {{ module }} = {};
 			{{ module }}.map.zoomTo({{ point_zoom }});
 		}
 	} else {
-		{{ module }}.map.setCenter(new OpenLayers.LonLat({{ default_lon }}, {{ default_lat }}), {{ default_zoom }});
+		{{ module }}.map.setCenter(new OpenLayers.LonLat({{ default_lon }}, {{ default_lat }}){% if display_srid %}.transform({{ module }}.map.getProjectionObject()){% endif %}, {{ default_zoom }});
 	}
 	// This allows editing of the geographic fields -- the modified WKT is
 	// written back to the content field (as EWKT, so that the ORM will
