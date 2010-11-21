@@ -290,4 +290,13 @@ attributes are available:
 Writing a custom base widget
 ============================
 
-TODO
+The role of base widgets is to pass a number of parameters to a template.
+Assuming you want to rely on OpenLayers, writing a custom widget can be done
+easily by overriding the default templates. Look at the different templates in
+the ``django/contrib/gis/templates/gis`` directory for examples.
+
+If you cannot use OpenLayers, you need to find a way to draw features,
+serialize them as WKT and dynamically fill hidden form inputs corresponding to
+the fields. See also the code in ``django.contrib.gis.admin.options`` for the
+internals of the default ``GeometryWidget`` if you need custom rendering
+logic.
