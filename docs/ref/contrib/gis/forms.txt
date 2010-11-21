@@ -1,0 +1,153 @@
+.. _ref-gis-forms-api:
+
+===================
+GeoDjango Forms API
+===================
+
+.. module:: django.contrib.gis.forms
+   :synopsis: GeoDjango's forms API.
+
+.. versionadded:: 1.3
+
+Overview
+========
+
+GeoDjango ships with a forms API with rich map widgets for adding and editing
+geographic data. There are two kinds of widgets:
+
+* *Base widgets* can be seen as map backends: they take care of rendering a
+  map from a specific mapping API (such as OpenLayers, OpenStreetMap, Google
+  Maps, Yahoo! Maps…).
+
+* *Field widgets*, which are subclasses of base widgets, take care of setting
+  the right drawing controls on the map, according to the type of geometry.
+
+The following base widgets are provided:
+
+* ``GeometryWidget`` is a basic OpenLayers widget which uses the Vector Map
+  Level 0 WMS data hosted at Metacarta.
+
+* ``OSMWidget`` is a ``GeometryWidget`` subclass which uses the map tiles from
+  `OpenStreetMap`_.
+
+* ``GMapWidget`` is another ``GeometryWidget`` subclass which renders a
+  `Google Map`_
+
+.. _OpenStreetMap: http://www.openstreetmap.org/
+.. _Google Map: http://code.google.com/apis/maps/index.html
+
+The mapping between model field, form fields and widgets is shown below (form
+fields and widgets can be found in the django.contrib.gis.forms package):
+
+======================= ======================= ========================
+Model Fields            Form Fields             Form Widgets
+======================= ======================= ========================
+PointField              PointField              PointWidget
+LineStringField         LineStringField         LineStringWidget
+PolygonField            PolygonField            PolygonWidget
+GeometryField           GeometryField           GeometryWidget
+MultiPointField         MultiPointField         MultiPointWidget
+MultiLineStringField    MultiLineStringField    MultiLineStringWidget
+MultiPolygonField       MultiPolygonField       MultiPolygonWidget
+GeometryCollectionField GeometryCollectionField GeometryCollectionWidget
+======================= ======================= ========================
+
+.. note::
+
+    Due to upstream bugs in the OpenLayers library, the edition of
+    geometry collections is not available yet.
+    
+    Furthermore, OpenLayers 2.10 is not able to *edit* existing MultiPoint
+    fields (adding new instances will work). MultiPoints can be edited using
+    OpenLayers 2.9.
+
+Forms
+=====
+
+The GeoDjango forms library extends Django's form library, which means that
+you can safely use this library in standard Django forms. Geo-enabling a form
+is as simple as changing::
+
+    from django import forms
+
+to::
+
+    from django.contrib.gis import forms
+
+Geographic fields can be added thusly::
+
+    class MyForm(forms.Form):
+        location = forms.PointField()
+
+The form can then be rendered in your templates, validated in your view code
+just like standard Django forms. Make sure you include the form's media files
+when rendering the form.
+
+ModelForms
+==========
+
+Since Django 1.3, geographic fields integrates nicely with rich form widgets.
+Suppose you have a model with a geographic field::
+
+    from django.contrib.gis.db import models
+
+    class Poi(models.Model):
+        name = models.CharField(max_length=255)
+	area = models.PolygonField()
+
+You can automatically get the corresponding ``ModelForm``::
+
+    class PoiForm(forms.ModelForm):
+        class Meta:
+	    model = Poi
+
+Using a custom base widget
+==========================
+
+Standard forms
+--------------
+
+The default fields use the basic ``GeometryWidget``. If you want to use the
+``OSMWidget`` or the ``GMapWidget``, you need to define your own widgets as
+such::
+
+    from django.contrib.gis import forms
+
+    class GMapPointWidget(forms.GMapWidget, forms.PointWidget):
+        pass
+
+    class GMapPointField(forms.PointField):
+        widget = GMapPointWidget
+
+``MyForm`` can be rewritten to use a Google Map widget::
+
+    class MyForm(forms.Form):
+        location = forms.GMapPointField()
+
+ModelForms
+----------
+
+With ``ModelForms``, only the custom widgets need to be declared. The previous
+``PoiForm`` can be rewritten::
+
+    from django.contrib.gis import forms
+
+    class GMapPolygonWidget(forms.GMapWidget, forms.PolygonWidget):
+        pass
+
+    class PoiForm(forms.ModelForm):
+        class Meta:
+	    model = Poi
+	    widgets = {
+                'location': GMapPolygonWidget,
+            }
+
+Customizing the map widgets
+===========================
+
+TODO
+
+Writing a custom base widget
+============================
+
+TODO

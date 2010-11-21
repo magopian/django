@@ -20,6 +20,7 @@ of spatially enabled data.
    install
    model-api
    db-api
+   forms
    geoquerysets
    measure
    geos
