@@ -13,60 +13,34 @@ GeoDjango's admin site
 
 .. class:: GeoModelAdmin
 
-   .. attribute:: default_lon
+The ``GeoModelAdmin`` class accepts the same attributes as Geometry widgets.
+Setting those attributes on the ``GeoModelAdmin`` class will automatically set
+them on all the geographic widgets of the form. For a full list of valid
+attributes, see :ref:`ref-gis-widgets-api`.
 
-   The default center longitude.
+Additionally, a ``widget`` attribute is supported on the ``GeoModelAdmin``
+class. Set it to an available base widget to override the base widget of all
+the geographic fields of the admin form. For instance, to display 800*600
+google maps on the admin form::
 
-   .. attribute:: default_lat
+    from django.contrib.gis import admin, forms
 
-   The default center latitude.
-
-   .. attribute:: default_zoom
-
-   The default zoom level to use.  Defaults to 18.
-
-   .. attribute:: extra_js
-
-   Sequence of URLs to any extra JavaScript to include.
-
-   .. attribute:: map_template
-
-   Override the template used to generate the JavaScript slippy map.
-   Default is ``'gis/admin/openlayers.html'``.
-
-   .. attribute:: map_width
-
-   Width of the map, in pixels.  Defaults to 600.
-
-   .. attribute:: map_height
-
-   Height of the map, in pixels.  Defaults to 400.
-
-   .. attribute:: openlayers_url
-
-   Link to the URL of the OpenLayers JavaScript.  Defaults to
-   ``'http://openlayers.org/api/2.8/OpenLayers.js'``.
+    from myapp.models import SomeModel
 
 
-   .. attribute:: modifiable
+    class SomeModelAdmin(admin.GeoModelAdmin):
+        map_width = 800
+        map_height = 600
+        widget = forms.GMapWidget
 
-   Defaults to ``False``.  When set to to ``True``, disables editing of
-   existing geometry fields in the admin.
-
-   .. note::
-
-       This is different from adding the geometry field to
-       :attr:`~django.contrib.admin.ModelAdmin.readonly_fields`,
-       which will only display the WKT of the geometry. Setting
-       ``modifiable=False``, actually displays the geometry in a map,
-       but disables the ability to edit its vertices.
+    admin.site.register(SomeModel, SomeModelAdmin)
 
 ``OSMGeoAdmin``
 ===============
 
 .. class:: OSMGeoAdmin
 
-   A subclass of :class:`GeoModelAdmin` that uses a spherical mercator projection
-   with `OpenStreetMap <http://openstreetmap.org/>`_ street data tiles.
-   See the :ref:`OSMGeoAdmin introduction <osmgeoadmin-intro>`
-   in the tutorial for a usage example.
+   A subclass of :class:`GeoModelAdmin` that uses a spherical mercator
+   projection with `OpenStreetMap <http://openstreetmap.org/>`_ street data
+   tiles. See the :ref:`OSMGeoAdmin introduction <osmgeoadmin-intro>` in the
+   tutorial for a usage example.

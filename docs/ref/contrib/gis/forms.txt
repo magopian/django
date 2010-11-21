@@ -142,10 +142,150 @@ With ``ModelForms``, only the custom widgets need to be declared. The previous
                 'location': GMapPolygonWidget,
             }
 
+.. _ref-gis-widgets-api:
+
 Customizing the map widgets
 ===========================
 
-TODO
+The GeometryWidget and its subclasses can be customized by setting specific
+attributes to change the rendering behaviour of the widget. The following
+attributes are available:
+
+.. class:: GeometryWidget
+
+   .. attribute:: color
+
+   The color of the vertices drawn on the map, in ``rgb`` or ``rrggbb``
+   format. Defaults to OpenLayer's default color, ``'ee9900'``.
+
+   .. attribute:: default_lon
+
+   The default center longitude. Defaults to ``0``.
+
+   .. attribute:: default_lat
+
+   The default center latitude. Defaults to ``0``.
+
+   .. attribute:: default_zoom
+
+   The default zoom level. Defaults to ``4``.
+
+   .. attribute:: display_srid
+
+   The SRID to use for the display projection. Defaults to ``False``,
+   OpenLayers will use the map SRID if ``display_srid`` is not set.
+
+   .. attribute:: display_wkt
+
+   If ``True``, a ``<textarea>`` containing the WKT serialization of the
+   features drawn on the map is displayed under the map. Useful for debugging.
+   Defaults to ``False``.
+
+   .. attribute:: layerswitcher
+
+   Whether to show the OpenLayers layer switcher control. Defaults to
+   ``True``.
+
+   .. attribute:: map_width
+
+   The width of the map, in pixels. Defaults to ``600``.
+
+   .. attribute:: map_height
+
+   The height of the map, in pixels. Defaults to ``400``.
+
+   .. attribute:: map_srid
+
+   The SRID to use on the map. Defaults to ``4326``.
+
+   .. attribute:: map_template
+
+   The name of the template used to render the map widget. Defaults to
+   ``'gis/widget.html'``.
+
+   .. attribute:: max_extent
+
+   A series of coordinates (left, bottom, right, top) defining the bounds of
+   the map. Defaults to ``False``, OpenLayers uses its default value:
+   ``-180,-90,180,90``.
+
+   .. note::
+
+      ``max_extent``, ``max_resolution``, ``max_zoom``, ``min_zoom``,
+      ``num_zoom`` and ``units`` cannot be set all at once. They are
+      conflicting, please refer to the OpenLayers documentation to see which
+      need to be set depending on your needs.
+
+   .. attribute:: max_resolution
+
+   The number of *map units per pixels* at the highest zoom level. Defaults to
+   ``1.40625``, the default projection being the Spherical Mercator
+   projection.
+
+   .. attribute:: max_zoom
+
+   The maximal zoom level of the map. Defaults to ``False``.
+
+   .. attribute:: min_zoom
+
+   The minimal zoom level of the map. Defaults to ``False``.
+
+   .. attribute:: modifiable
+
+   When set to ``False``, disables editing of existing geometry fields on the
+   map. Defaults to ``True``.
+
+   .. note::
+
+      In the admin this is different from adding the geometry field to
+      ``readonly_fields``, which will only display the WKT of the geometry.
+      Setting ``modifiable=False``, actually displays the geometry in a map,
+      but disables the ability to edit its vertices.
+
+   .. attribute:: mouse_position
+
+   Switch to display the coordinates of the mouse on the corner of the map.
+   Defaults to ``True``.
+
+   .. attribute:: num_zoom
+
+   The number of zoom levels to enable on the map. Defaults to ``18``.
+
+   .. attribute:: opacity
+
+   The opacity of the inner part of the vertices drawn on the map (most
+   relevant for Polygons). Defaults to OpenLayer's default, ``0.4``.
+
+   .. attribute:: point_zoom
+
+   The zoom level to set when an existing point field is edited. Defaults to
+   ``num_zoom - 6``, ``12``.
+
+   .. attribute:: scale_text
+
+   Switch to display the current scale on the corner of the map. Defaults to
+   ``True``.
+
+   .. attribute:: scrollable
+
+   Switch to enable / disable the zoom wheel on the map. Defaults to ``True``.
+
+   .. attribute:: units
+
+   The units of the map. Defaults to ``False``.
+
+   .. attribute:: wms_url
+
+   The URL of the WMS to fetch the map from. Defaults to
+   ``'http://labs.metacarta.com/wms/vmap0'``
+
+   .. attribute:: wms_layer
+
+   The layer to use from the WMS. Defaults to ``'basic'``.
+
+   .. attribute:: wms_name
+
+   The name of the WMS on the map. Defaults to ``'OpenLayers WMS'``.
 
 Writing a custom base widget
 ============================
