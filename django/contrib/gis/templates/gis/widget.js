@@ -1,3 +1,4 @@
+{# Author: Justin Bronn, Travis Pinney & Dane Springmeyer #}
 {% block vars %}
 var {{ module }} = {};
 {{ module }}.map = null;
