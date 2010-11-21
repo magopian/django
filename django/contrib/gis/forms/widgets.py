@@ -135,7 +135,7 @@ class GeometryWidget(forms.Textarea):
             ('max_resolution', 'maxResolution', float),
             ('max_extent', 'maxExtent', 'bounds'),
             ('num_zoom', 'numZoomLevels', int),
-            ('max_zoom', 'maxZoomLevels', int),
+            ('max_zoom', 'maxZoomLevel', int),
             ('min_zoom', 'minZoomLevel', int),
         ]
 
