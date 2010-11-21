@@ -1,10 +1,10 @@
 from django.contrib.admin import ModelAdmin
-from django.contrib.gis.forms import GeometryWidget
+from django.contrib.gis import forms
 from django.contrib.gis.db import models
 
 
 class GeoModelAdmin(ModelAdmin):
-    widget = GeometryWidget
+    widget = forms.GeometryWidget
 
     def formfield_for_dbfield(self, db_field, **kwargs):
         if isinstance(db_field, models.GeometryField):
@@ -29,3 +29,9 @@ class GeoModelAdmin(ModelAdmin):
             collection_type = widget.collection_type
 
         return MapWidget
+
+
+from django.contrib.gis import gdal
+if gdal.HAS_GDAL:
+    class OSMGeoAdmin(GeoModelAdmin):
+        widget = forms.OSMWidget
