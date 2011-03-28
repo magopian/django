@@ -35,7 +35,8 @@ class CALocalFlavorTests(LocalFlavorTestCase):
 <option value="QC">Quebec</option>
 <option value="SK">Saskatchewan</option>
 <option value="YT">Yukon</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('province', 'AB'), out)
 
     def test_CAPostalCodeField(self):

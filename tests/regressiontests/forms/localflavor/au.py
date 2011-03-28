@@ -16,7 +16,8 @@ class AULocalFlavorTests(LocalFlavorTestCase):
 <option value="TAS">Tasmania</option>
 <option value="VIC">Victoria</option>
 <option value="WA">Western Australia</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('state', 'NSW'), out)
 
     def test_AUPostCodeField(self):

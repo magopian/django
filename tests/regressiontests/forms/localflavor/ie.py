@@ -39,5 +39,6 @@ class IELocalFlavorTests(LocalFlavorTestCase):
 <option value="westmeath">Westmeath</option>
 <option value="wexford">Wexford</option>
 <option value="wicklow">Wicklow</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('counties', 'dublin'), out)

@@ -52,7 +52,8 @@ class ROLocalFlavorTests(LocalFlavorTestCase):
 <option value="VS">Vaslui</option>
 <option value="VL">V\xe2lcea</option>
 <option value="VN">Vrancea</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('county', 'CJ'), out)
 
     def test_ROCIFField(self):

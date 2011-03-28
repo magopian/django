@@ -17,7 +17,8 @@ class ATLocalFlavorTests(LocalFlavorTestCase):
 <option value="TI">Tyrol</option>
 <option value="VO">Vorarlberg</option>
 <option value="WI" selected="selected">Vienna</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('bundesland', 'WI'), out)
 
     def test_ATZipCodeField(self):

@@ -104,7 +104,8 @@ class BRLocalFlavorTests(LocalFlavorTestCase):
 <option value="SP">S\xe3o Paulo</option>
 <option value="SE">Sergipe</option>
 <option value="TO">Tocantins</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('states', 'PR'), out)
 
     def test_BRStateChoiceField(self):

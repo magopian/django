@@ -350,7 +350,8 @@ class FILocalFlavorTests(LocalFlavorTestCase):
 <option value="ypaja">Yp\xe4j\xe4</option>
 <option value="ahtari">\xc4ht\xe4ri</option>
 <option value="aanekoski">\xc4\xe4nekoski</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('municipalities', 'turku'), out)
 
     def test_FIZipCodeField(self):

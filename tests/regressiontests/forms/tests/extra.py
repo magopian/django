@@ -37,6 +37,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="11">November</option>
 <option value="12">December</option>
 </select>
+
 <select name="mydate_day" id="id_mydate_day">
 <option value="0">---</option>
 <option value="1">1</option>
@@ -71,6 +72,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="30">30</option>
 <option value="31">31</option>
 </select>
+
 <select name="mydate_year" id="id_mydate_year">
 <option value="0">---</option>
 <option value="2007">2007</option>
@@ -83,7 +85,8 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="2014">2014</option>
 <option value="2015">2015</option>
 <option value="2016">2016</option>
-</select>""")
+</select>
+""")
         self.assertEqual(w.render('mydate', None), w.render('mydate', ''))
 
         self.assertEqual(w.render('mydate', '2010-04-15'), """<select name="mydate_month" id="id_mydate_month">
@@ -100,6 +103,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="11">November</option>
 <option value="12">December</option>
 </select>
+
 <select name="mydate_day" id="id_mydate_day">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -133,6 +137,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="30">30</option>
 <option value="31">31</option>
 </select>
+
 <select name="mydate_year" id="id_mydate_year">
 <option value="2007">2007</option>
 <option value="2008">2008</option>
@@ -144,7 +149,8 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="2014">2014</option>
 <option value="2015">2015</option>
 <option value="2016">2016</option>
-</select>""")
+</select>
+""")
 
         # Accepts a datetime or a string:
         self.assertEqual(w.render('mydate', datetime.date(2010, 4, 15)), w.render('mydate', '2010-04-15'))
@@ -164,6 +170,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="11">November</option>
 <option value="12">December</option>
 </select>
+
 <select name="mydate_day" id="id_mydate_day">
 <option value="1">1</option>
 <option value="2">2</option>
@@ -197,6 +204,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="30">30</option>
 <option value="31" selected="selected">31</option>
 </select>
+
 <select name="mydate_year" id="id_mydate_year">
 <option value="2007">2007</option>
 <option value="2008">2008</option>
@@ -208,7 +216,8 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="2014">2014</option>
 <option value="2015">2015</option>
 <option value="2016">2016</option>
-</select>""")
+</select>
+""")
 
         # Using a SelectDateWidget in a form:
         w = SelectDateWidget(years=('2007','2008','2009','2010','2011','2012','2013','2014','2015','2016'), required=False)
@@ -227,6 +236,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="11">November</option>
 <option value="12">December</option>
 </select>
+
 <select name="mydate_day" id="id_mydate_day">
 <option value="0">---</option>
 <option value="1">1</option>
@@ -261,6 +271,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="30">30</option>
 <option value="31">31</option>
 </select>
+
 <select name="mydate_year" id="id_mydate_year">
 <option value="0">---</option>
 <option value="2007">2007</option>
@@ -273,7 +284,8 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="2014">2014</option>
 <option value="2015">2015</option>
 <option value="2016">2016</option>
-</select>""")
+</select>
+""")
         self.assertEqual(w.render('mydate', '2010-04-15'), """<select name="mydate_month" id="id_mydate_month">
 <option value="0">---</option>
 <option value="1">January</option>
@@ -289,6 +301,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="11">November</option>
 <option value="12">December</option>
 </select>
+
 <select name="mydate_day" id="id_mydate_day">
 <option value="0">---</option>
 <option value="1">1</option>
@@ -323,6 +336,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="30">30</option>
 <option value="31">31</option>
 </select>
+
 <select name="mydate_year" id="id_mydate_year">
 <option value="0">---</option>
 <option value="2007">2007</option>
@@ -335,7 +349,8 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 <option value="2014">2014</option>
 <option value="2015">2015</option>
 <option value="2016">2016</option>
-</select>""")
+</select>
+""")
 
         a = GetDate({'mydate_month':'4', 'mydate_day':'1', 'mydate_year':'2008'})
         self.assertTrue(a.is_valid())
@@ -345,7 +360,7 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
         # we must be prepared to accept the input from the "as_hidden"
         # rendering as well.
 
-        self.assertEqual(a['mydate'].as_hidden(), '<input type="hidden" name="mydate" value="2008-4-1" id="id_mydate" />')
+        self.assertEqual(a['mydate'].as_hidden(), '<input type="hidden" name="mydate" value="2008-4-1" id="id_mydate" />\n')
 
         b = GetDate({'mydate':'2008-4-1'})
         self.assertTrue(b.is_valid())
@@ -387,13 +402,17 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 
         w = ComplexMultiWidget()
         self.assertEqual(w.render('name', 'some text,JP,2007-04-25 06:24:00'), """<input type="text" name="name_0" value="some text" />
-<select multiple="multiple" name="name_1">
+
+<select name="name_1" multiple="multiple">
 <option value="J" selected="selected">John</option>
 <option value="P" selected="selected">Paul</option>
 <option value="G">George</option>
 <option value="R">Ringo</option>
 </select>
-<input type="text" name="name_2_0" value="2007-04-25" /><input type="text" name="name_2_1" value="06:24:00" />""")
+
+<input type="text" name="name_2_0" value="2007-04-25" />
+<input type="text" name="name_2_1" value="06:24:00" />
+""")
 
         class ComplexField(MultiValueField):
             def __init__(self, required=True, widget=None, label=None, initial=None):
@@ -421,23 +440,31 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 
         f = ComplexFieldForm()
         self.assertEqual(f.as_table(), """<tr><th><label for="id_field1_0">Field1:</label></th><td><input type="text" name="field1_0" id="id_field1_0" />
-<select multiple="multiple" name="field1_1" id="id_field1_1">
+
+<select name="field1_1" multiple="multiple" id="id_field1_1">
 <option value="J">John</option>
 <option value="P">Paul</option>
 <option value="G">George</option>
 <option value="R">Ringo</option>
 </select>
-<input type="text" name="field1_2_0" id="id_field1_2_0" /><input type="text" name="field1_2_1" id="id_field1_2_1" /></td></tr>""")
+
+<input type="text" name="field1_2_0" id="id_field1_2_0" />
+<input type="text" name="field1_2_1" id="id_field1_2_1" />
+</td></tr>""")
 
         f = ComplexFieldForm({'field1_0':'some text','field1_1':['J','P'], 'field1_2_0':'2007-04-25', 'field1_2_1':'06:24:00'})
         self.assertEqual(f.as_table(), """<tr><th><label for="id_field1_0">Field1:</label></th><td><input type="text" name="field1_0" value="some text" id="id_field1_0" />
-<select multiple="multiple" name="field1_1" id="id_field1_1">
+
+<select name="field1_1" multiple="multiple" id="id_field1_1">
 <option value="J" selected="selected">John</option>
 <option value="P" selected="selected">Paul</option>
 <option value="G">George</option>
 <option value="R">Ringo</option>
 </select>
-<input type="text" name="field1_2_0" value="2007-04-25" id="id_field1_2_0" /><input type="text" name="field1_2_1" value="06:24:00" id="id_field1_2_1" /></td></tr>""")
+
+<input type="text" name="field1_2_0" value="2007-04-25" id="id_field1_2_0" />
+<input type="text" name="field1_2_1" value="06:24:00" id="id_field1_2_1" />
+</td></tr>""")
 
         self.assertEqual(f.cleaned_data['field1'], u'some text,JP,2007-04-25 06:24:00')
 
@@ -509,11 +536,14 @@ class FormsExtraTestCase(unittest.TestCase, AssertFormErrorsMixin):
 
         data = dict(email='invalid')
         f = CommentForm(data, auto_id=False, error_class=DivErrorList)
-        self.assertEqual(f.as_p(), """<p>Name: <input type="text" name="name" maxlength="50" /></p>
+        self.assertEqual(f.as_p(), """<p>Name: <input type="text" name="name" maxlength="50" />
+</p>
 <div class="errorlist"><div class="error">Enter a valid e-mail address.</div></div>
-<p>Email: <input type="text" name="email" value="invalid" /></p>
+<p>Email: <input type="text" name="email" value="invalid" />
+</p>
 <div class="errorlist"><div class="error">This field is required.</div></div>
-<p>Comment: <input type="text" name="comment" /></p>""")
+<p>Comment: <input type="text" name="comment" />
+</p>""")
 
     def test_multipart_encoded_form(self):
         class FormWithoutFile(Form):
@@ -581,6 +611,7 @@ class FormsExtraL10NTestCase(unittest.TestCase):
 <option value="30">30</option>
 <option value="31">31</option>
 </select>
+
 <select name="date_month" id="id_date_month">
 <option value="0">---</option>
 <option value="1">januari</option>
@@ -596,6 +627,7 @@ class FormsExtraL10NTestCase(unittest.TestCase):
 <option value="11">november</option>
 <option value="12">december</option>
 </select>
+
 <select name="date_year" id="id_date_year">
 <option value="0">---</option>
 <option value="2007">2007</option>
@@ -608,7 +640,8 @@ class FormsExtraL10NTestCase(unittest.TestCase):
 <option value="2014">2014</option>
 <option value="2015">2015</option>
 <option value="2016">2016</option>
-</select>""")
+</select>
+""")
 
         # Years before 1900 work
         w = SelectDateWidget(years=('1899',))

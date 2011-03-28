@@ -25,7 +25,8 @@ class ESLocalFlavorTests(LocalFlavorTestCase):
 <option value="MU">Region of Murcia</option>
 <option value="NA">Foral Community of Navarre</option>
 <option value="VC">Valencian Community</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('regions', 'CT'), out)
 
     def test_ESProvinceSelect(self):
@@ -83,7 +84,8 @@ class ESLocalFlavorTests(LocalFlavorTestCase):
 <option value="50">Zaragoza</option>
 <option value="51">Ceuta</option>
 <option value="52">Melilla</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('provinces', '08'), out)
 
     def test_ESPostalCodeField(self):

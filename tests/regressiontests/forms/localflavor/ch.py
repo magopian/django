@@ -34,7 +34,8 @@ class CHLocalFlavorTests(LocalFlavorTestCase):
 <option value="VD">Vaud</option>
 <option value="ZG">Zug</option>
 <option value="ZH">Zurich</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('state', 'AG'), out)
     
     def test_CHZipCodeField(self):

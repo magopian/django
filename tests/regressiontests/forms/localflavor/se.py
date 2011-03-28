@@ -46,7 +46,8 @@ class SELocalFlavorTests(LocalFlavorTestCase):
 <option value="X">G\xe4vleborg</option>
 <option value="Y">V\xe4sternorrland</option>
 <option value="Z">J\xe4mtland</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('swedish_county', 'E'), out)
 
     def test_SEOrganizationNumberField(self):

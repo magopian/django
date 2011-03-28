@@ -28,7 +28,8 @@ class ITLocalFlavorTests(LocalFlavorTestCase):
 <option value="UMB">Umbria</option>
 <option value="VAO">Valle d\u2019Aosta</option>
 <option value="VEN">Veneto</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('regions', 'PMN'), out)
 
     def test_ITZipCodeField(self):

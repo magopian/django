@@ -58,7 +58,8 @@ class BELocalFlavorTests(LocalFlavorTestCase):
 <option value="BRU">Brussels Capital Region</option>
 <option value="VLG" selected="selected">Flemish Region</option>
 <option value="WAL">Wallonia</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('regions', 'VLG'), out)
 
     def test_BEProvinceSelect(self):
@@ -75,5 +76,6 @@ class BELocalFlavorTests(LocalFlavorTestCase):
 <option value="WNA">Namur</option>
 <option value="WBR">Walloon Brabant</option>
 <option value="VWV">West Flanders</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('provinces', 'WLG'), out)

@@ -36,7 +36,8 @@ class CZLocalFlavorTests(LocalFlavorTestCase):
 <option value="OL">Olomouc Region</option>
 <option value="ZL">Zlin Region</option>
 <option value="MS">Moravian-Silesian Region</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('regions', 'TT'), out)
 
     def test_CZPostalCodeField(self):

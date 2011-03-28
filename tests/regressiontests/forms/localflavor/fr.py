@@ -141,5 +141,6 @@ class FRLocalFlavorTests(LocalFlavorTestCase):
 <option value="986">986 - Wallis et Futuna</option>
 <option value="987">987 - Polynesie Francaise</option>
 <option value="988">988 - Nouvelle-Caledonie</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('dep', 'Paris'), out)

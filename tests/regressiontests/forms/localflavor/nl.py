@@ -20,7 +20,8 @@ class NLLocalFlavorTests(LocalFlavorTestCase):
 <option value="UT">Utrecht</option>
 <option value="ZE">Zeeland</option>
 <option value="ZH">Zuid-Holland</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('provinces', 'OV'), out)
 
     def test_NLPhoneNumberField(self):

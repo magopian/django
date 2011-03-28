@@ -27,9 +27,10 @@ class UYLocalFlavorTests(LocalFlavorTestCase):
 <option value="K">Soriano</option>
 <option value="R">Tacuaremb\xf3</option>
 <option value="D">Treinta y Tres</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('departamentos', 'S'), out)
-    
+
     def test_UYCIField(self):
         error_format = [u'Enter a valid CI number in X.XXX.XXX-X,XXXXXXX-X or XXXXXXXX format.']
         error_invalid = [u'Enter a valid CI number.']

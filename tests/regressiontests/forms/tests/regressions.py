@@ -15,7 +15,7 @@ class FormsRegressionsTestCase(TestCase):
             f1 = CharField(max_length=10, widget=TextInput(attrs=extra_attrs))
             f2 = CharField(widget=TextInput(attrs=extra_attrs))
 
-        self.assertEqual(TestForm(auto_id=False).as_p(), u'<p>F1: <input type="text" class="special" name="f1" maxlength="10" /></p>\n<p>F2: <input type="text" class="special" name="f2" /></p>')
+        self.assertEqual(TestForm(auto_id=False).as_p(), u'<p>F1: <input type="text" name="f1" class="special" maxlength="10" />\n</p>\n<p>F2: <input type="text" name="f2" class="special" />\n</p>')
 
     def test_regression_3600(self):
         # Tests for form i18n #
@@ -25,13 +25,13 @@ class FormsRegressionsTestCase(TestCase):
             username = CharField(max_length=10, label=ugettext_lazy('Username'))
 
         f = SomeForm()
-        self.assertEqual(f.as_p(), '<p><label for="id_username">Username:</label> <input id="id_username" type="text" name="username" maxlength="10" /></p>')
+        self.assertEqual(f.as_p(), '<p><label for="id_username">Username:</label> <input type="text" name="username" id="id_username" maxlength="10" />\n</p>')
 
         # Translations are done at rendering time, so multi-lingual apps can define forms)
         activate('de')
-        self.assertEqual(f.as_p(), '<p><label for="id_username">Benutzername:</label> <input id="id_username" type="text" name="username" maxlength="10" /></p>')
+        self.assertEqual(f.as_p(), '<p><label for="id_username">Benutzername:</label> <input type="text" name="username" id="id_username" maxlength="10" />\n</p>')
         activate('pl')
-        self.assertEqual(f.as_p(), u'<p><label for="id_username">Nazwa u\u017cytkownika:</label> <input id="id_username" type="text" name="username" maxlength="10" /></p>')
+        self.assertEqual(f.as_p(), u'<p><label for="id_username">Nazwa u\u017cytkownika:</label> <input type="text" name="username" id="id_username" maxlength="10" />\n</p>')
         deactivate()
 
     def test_regression_5216(self):
@@ -51,7 +51,7 @@ class FormsRegressionsTestCase(TestCase):
             somechoice = ChoiceField(choices=GENDERS, widget=RadioSelect(), label=u'\xc5\xf8\xdf')
 
         f = SomeForm()
-        self.assertEqual(f.as_p(), u'<p><label for="id_somechoice_0">\xc5\xf8\xdf:</label> <ul>\n<li><label for="id_somechoice_0"><input type="radio" id="id_somechoice_0" value="\xc5" name="somechoice" /> En tied\xe4</label></li>\n<li><label for="id_somechoice_1"><input type="radio" id="id_somechoice_1" value="\xf8" name="somechoice" /> Mies</label></li>\n<li><label for="id_somechoice_2"><input type="radio" id="id_somechoice_2" value="\xdf" name="somechoice" /> Nainen</label></li>\n</ul></p>')
+        self.assertEqual(f.as_p(), u'<p><label for="id_somechoice_0">\xc5\xf8\xdf:</label> <ul>\n<li><label for="id_somechoice_0"><input type="radio" id="id_somechoice_0" value="\xc5" name="somechoice" /> En tied\xe4</label></li>\n<li><label for="id_somechoice_1"><input type="radio" id="id_somechoice_1" value="\xf8" name="somechoice" /> Mies</label></li>\n<li><label for="id_somechoice_2"><input type="radio" id="id_somechoice_2" value="\xdf" name="somechoice" /> Nainen</label></li>\n</ul>\n</p>')
 
         # Testing choice validation with UTF-8 bytestrings as input (these are the
         # Russian abbreviations "мес." and "шт.".
@@ -63,7 +63,7 @@ class FormsRegressionsTestCase(TestCase):
         # Translated error messages used to be buggy.
         activate('ru')
         f = SomeForm({})
-        self.assertEqual(f.as_p(), u'<ul class="errorlist"><li>\u041e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0435 \u043f\u043e\u043b\u0435.</li></ul>\n<p><label for="id_somechoice_0">\xc5\xf8\xdf:</label> <ul>\n<li><label for="id_somechoice_0"><input type="radio" id="id_somechoice_0" value="\xc5" name="somechoice" /> En tied\xe4</label></li>\n<li><label for="id_somechoice_1"><input type="radio" id="id_somechoice_1" value="\xf8" name="somechoice" /> Mies</label></li>\n<li><label for="id_somechoice_2"><input type="radio" id="id_somechoice_2" value="\xdf" name="somechoice" /> Nainen</label></li>\n</ul></p>')
+        self.assertEqual(f.as_p(), u'<ul class="errorlist"><li>\u041e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u043e\u0435 \u043f\u043e\u043b\u0435.</li></ul>\n<p><label for="id_somechoice_0">\xc5\xf8\xdf:</label> <ul>\n<li><label for="id_somechoice_0"><input type="radio" id="id_somechoice_0" value="\xc5" name="somechoice" /> En tied\xe4</label></li>\n<li><label for="id_somechoice_1"><input type="radio" id="id_somechoice_1" value="\xf8" name="somechoice" /> Mies</label></li>\n<li><label for="id_somechoice_2"><input type="radio" id="id_somechoice_2" value="\xdf" name="somechoice" /> Nainen</label></li>\n</ul>\n</p>')
         deactivate()
 
         # Deep copying translated text shouldn't raise an error)
@@ -89,8 +89,8 @@ class FormsRegressionsTestCase(TestCase):
             data = IntegerField(widget=HiddenInput)
 
         f = HiddenForm({})
-        self.assertEqual(f.as_p(), u'<ul class="errorlist"><li>(Hidden field data) This field is required.</li></ul>\n<p> <input type="hidden" name="data" id="id_data" /></p>')
-        self.assertEqual(f.as_table(), u'<tr><td colspan="2"><ul class="errorlist"><li>(Hidden field data) This field is required.</li></ul><input type="hidden" name="data" id="id_data" /></td></tr>')
+        self.assertEqual(f.as_p(), u'<ul class="errorlist"><li>(Hidden field data) This field is required.</li></ul>\n<p> <input type="hidden" name="data" id="id_data" />\n</p>')
+        self.assertEqual(f.as_table(), u'<tr><td colspan="2"><ul class="errorlist"><li>(Hidden field data) This field is required.</li></ul><input type="hidden" name="data" id="id_data" />\n</td></tr>')
 
     def test_xss_error_messages(self):
         ###################################################

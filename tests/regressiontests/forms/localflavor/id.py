@@ -55,7 +55,8 @@ class IDLocalFlavorTests(LocalFlavorTestCase):
 <option value="SMB">Sumatera Barat</option>
 <option value="SMS">Sumatera Selatan</option>
 <option value="SMU">Sumatera Utara</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('provinces', 'LPG'), out)
 
     def test_IDLicensePlatePrefixSelect(self):
@@ -117,7 +118,8 @@ class IDLocalFlavorTests(LocalFlavorTestCase):
 <option value="T">Purwakarta</option>
 <option value="W">Sidoarjo</option>
 <option value="Z">Garut</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('codes', 'BE'), out)
 
     def test_IDPhoneNumberField(self):

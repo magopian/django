@@ -1,0 +1,1 @@
+<textarea name="{{ name }}"{% for key, val in attrs.items %} {{ key }}{% if val %}="{{ val }}"{% endif %}{% endfor %}>{{ value }}</textarea>

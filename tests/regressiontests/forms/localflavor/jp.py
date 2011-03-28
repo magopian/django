@@ -55,7 +55,8 @@ class JPLocalFlavorTests(LocalFlavorTestCase):
 <option value="miyazaki">Miyazaki</option>
 <option value="kagoshima">Kagoshima</option>
 <option value="okinawa">Okinawa</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('prefecture', 'kanagawa'), out)
 
     def test_JPPostalCodeField(self):

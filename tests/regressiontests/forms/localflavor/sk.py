@@ -16,7 +16,8 @@ class SKLocalFlavorTests(LocalFlavorTestCase):
 <option value="TN">Trencin region</option>
 <option value="TT" selected="selected">Trnava region</option>
 <option value="ZA">Zilina region</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('regions', 'TT'), out)
 
     def test_SKDistrictSelect(self):
@@ -101,7 +102,8 @@ class SKLocalFlavorTests(LocalFlavorTestCase):
 <option value="ZC">Zarnovica</option>
 <option value="ZH">Ziar nad Hronom</option>
 <option value="ZA">Zilina</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('Districts', 'RK'), out)
 
     def test_SKPostalCodeField(self):

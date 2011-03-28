@@ -755,7 +755,7 @@ class FieldsTests(TestCase):
             hidden_nullbool1 = NullBooleanField(widget=HiddenInput, initial=True)
             hidden_nullbool2 = NullBooleanField(widget=HiddenInput, initial=False)
         f = HiddenNullBooleanForm()
-        self.assertEqual('<input type="hidden" name="hidden_nullbool1" value="True" id="id_hidden_nullbool1" /><input type="hidden" name="hidden_nullbool2" value="False" id="id_hidden_nullbool2" />', str(f))
+        self.assertEqual('<input type="hidden" name="hidden_nullbool1" value="True" id="id_hidden_nullbool1" />\n<input type="hidden" name="hidden_nullbool2" value="False" id="id_hidden_nullbool2" />\n', str(f))
 
     def test_nullbooleanfield_3(self):
         class HiddenNullBooleanForm(Form):

@@ -155,9 +155,10 @@ class ISLocalFlavorTests(LocalFlavorTestCase):
 <option value="880">880 Kirkjub\xe6jarklaustur</option>
 <option value="900">900 Vestmannaeyjar</option>
 <option value="902">902 Vestmannaeyjar</option>
-</select>'''
+</select>
+'''
         self.assertEqual(f.render('foo', 'bar'), out)
-    
+
     def test_ISIdNumberField(self):
         error_atleast = [u'Ensure this value has at least 10 characters (it has 9).']
         error_invalid = [u'Enter a valid Icelandic identification number. The format is XXXXXX-XXXX.']
@@ -174,10 +175,10 @@ class ISLocalFlavorTests(LocalFlavorTestCase):
             '230880343234': error_atmost + error_invalid,
             'abcdefghijk': error_invalid,
             '2308803439': error_notvalid,
-        
+
         }
         self.assertFieldOutput(ISIdNumberField, valid, invalid)
-    
+
     def test_ISPhoneNumberField(self):
         error_invalid = [u'Enter a valid value.']
         error_atleast = [u'Ensure this value has at least 7 characters (it has 6).']
