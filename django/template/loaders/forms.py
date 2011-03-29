@@ -5,6 +5,7 @@ django/forms/templates.
 
 import os
 
+from django import forms
 from django.conf import settings
 from django.template.base import TemplateDoesNotExist
 from django.template.loader import BaseLoader
@@ -15,9 +16,8 @@ class Loader(BaseLoader):
     is_usable = True
 
     def load_template_source(self, template_name, template_dirs=None):
-        forms_template_dir = os.path.join(os.path.dirname(__file__),
-                                          os.pardir, os.pardir,
-                                          'forms', 'templates')
+        forms_template_dir = os.path.join(os.path.dirname(forms.__file__),
+                                          'templates')
         template_path = safe_join(forms_template_dir, template_name)
 
         try:
