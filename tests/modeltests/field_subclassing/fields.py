@@ -3,9 +3,6 @@ from django.db import models
 from django.utils import simplejson as json
 from django.utils.encoding import force_unicode
 
-import warnings
-warnings.filterwarnings("ignore", category=DeprecationWarning, module='django.db.models.fields.subclassing')
-
 class Small(object):
     """
     A simple class to show that non-trivial Python objects can be used as
@@ -40,7 +37,7 @@ class SmallField(models.Field):
             return value
         return Small(value[0], value[1])
 
-    def get_db_prep_save(self, value):
+    def get_db_prep_save(self, value, connection):
         return unicode(value)
 
     def get_prep_lookup(self, lookup_type, value):
@@ -70,7 +67,7 @@ class JSONField(models.TextField):
             value = json.loads(value)
         return value
 
-    def get_db_prep_save(self, value):
+    def get_db_prep_save(self, value, connection):
         if value is None:
             return None
         return json.dumps(value)

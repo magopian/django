@@ -1,9 +1,7 @@
 """
 SQLite3 backend for django.
 
-Python 2.4 requires pysqlite2 (http://pysqlite.org/).
-
-Python 2.5 and later can use a pysqlite2 module or the sqlite3 module in the
+Works with either the pysqlite2 module or the sqlite3 module in the
 standard library.
 """
 
@@ -25,14 +23,8 @@ try:
     except ImportError, e1:
         from sqlite3 import dbapi2 as Database
 except ImportError, exc:
-    import sys
     from django.core.exceptions import ImproperlyConfigured
-    if sys.version_info < (2, 5, 0):
-        module = 'pysqlite2 module'
-        exc = e1
-    else:
-        module = 'either pysqlite2 or sqlite3 modules (tried in that order)'
-    raise ImproperlyConfigured("Error loading %s: %s" % (module, exc))
+    raise ImproperlyConfigured("Error loading either pysqlite2 or sqlite3 modules (tried in that order): %s" % exc)
 
 
 DatabaseError = Database.DatabaseError
@@ -96,10 +88,10 @@ class DatabaseOperations(BaseDatabaseOperations):
         # It would be more straightforward if we could use the sqlite strftime
         # function, but it does not allow for keeping six digits of fractional
         # second information, nor does it allow for formatting date and datetime
-        # values differently. So instead we register our own function that 
-        # formats the datetime combined with the delta in a manner suitable 
+        # values differently. So instead we register our own function that
+        # formats the datetime combined with the delta in a manner suitable
         # for comparisons.
-        return  u'django_format_dtdelta(%s, "%s", "%d", "%d", "%d")' % (sql, 
+        return  u'django_format_dtdelta(%s, "%s", "%d", "%d", "%d")' % (sql,
             connector, timedelta.days, timedelta.seconds, timedelta.microseconds)
 
     def date_trunc_sql(self, lookup_type, field_name):
@@ -187,7 +179,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         super(DatabaseWrapper, self).__init__(*args, **kwargs)
 
         self.features = DatabaseFeatures(self)
-        self.ops = DatabaseOperations()
+        self.ops = DatabaseOperations(self)
         self.client = DatabaseClient(self)
         self.creation = DatabaseCreation(self)
         self.introspection = DatabaseIntrospection(self)

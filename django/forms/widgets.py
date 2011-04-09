@@ -1,6 +1,8 @@
 """
 HTML Widget classes
 """
+
+import copy
 import datetime
 import time
 
@@ -10,10 +12,10 @@ from util import flatatt
 
 from django.conf import settings
 from django.template import loader, Context
-from django.utils import datetime_safe, formats, copycompat as copy
+from django.utils import datetime_safe, formats
 from django.utils.datastructures import MultiValueDict, MergeDict
 from django.utils.encoding import StrAndUnicode, force_unicode
-from django.utils.html import escape, conditional_escape
+from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext, ugettext_lazy
 

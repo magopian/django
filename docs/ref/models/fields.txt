@@ -59,6 +59,9 @@ string, not ``NULL``.
     coerced for string-based fields that have the empty string as a possible
     value, and the value ``NULL`` will be stored to denote the empty string.
 
+If you want to accept :attr:`~Field.null` values with :class:`BooleanField`,
+use :class:`NullBooleanField` instead.
+
 ``blank``
 ---------
 
@@ -341,6 +344,9 @@ A true/false field.
 
 The admin represents this as a checkbox.
 
+If you need to accept :attr:`~Field.null` values then use
+:class:`NullBooleanField` instead.
+
 .. versionchanged:: 1.2
 
     In previous versions of Django when running under MySQL ``BooleanFields``
@@ -469,7 +475,7 @@ The admin represents this as an ``<input type="text">`` (a single-line input).
 
 .. class:: EmailField([max_length=75, **options])
 
-A :class:`CharField` that checks that the value is a valid e-mail address.
+A :class:`CharField` that checks that the value is a valid email address.
 
 ``FileField``
 -------------

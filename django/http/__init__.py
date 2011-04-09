@@ -115,7 +115,7 @@ class CompatCookie(SimpleCookie):
         super(CompatCookie, self).__init__(*args, **kwargs)
         import warnings
         warnings.warn("CompatCookie is deprecated, use django.http.SimpleCookie instead.",
-                      PendingDeprecationWarning)
+                      DeprecationWarning)
 
 from django.utils.datastructures import MultiValueDict, ImmutableList
 from django.utils.encoding import smart_str, iri_to_uri, force_unicode
@@ -262,14 +262,18 @@ class HttpRequest(object):
         if self.method != 'POST':
             self._post, self._files = QueryDict('', encoding=self._encoding), MultiValueDict()
             return
-        if self._read_started:
+        if self._read_started and not hasattr(self, '_raw_post_data'):
             self._mark_post_parse_error()
             return
 
         if self.META.get('CONTENT_TYPE', '').startswith('multipart'):
-            self._raw_post_data = ''
+            if hasattr(self, '_raw_post_data'):
+                # Use already read data
+                data = StringIO(self._raw_post_data)
+            else:
+                data = self
             try:
-                self._post, self._files = self.parse_file_upload(self.META, self)
+                self._post, self._files = self.parse_file_upload(self.META, data)
             except:
                 # An error occured while parsing POST data.  Since when
                 # formatting the error the request handler might access
@@ -364,7 +368,7 @@ class QueryDict(MultiValueDict):
         return result
 
     def __deepcopy__(self, memo):
-        import django.utils.copycompat as copy
+        import copy
         result = self.__class__('', mutable=True, encoding=self.encoding)
         memo[id(self)] = result
         for key, value in dict.items(self):

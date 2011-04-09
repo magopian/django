@@ -1,8 +1,8 @@
+from functools import update_wrapper
 from django import http
 from django.core.exceptions import ImproperlyConfigured
 from django.template import RequestContext, loader
 from django.template.response import TemplateResponse
-from django.utils.functional import update_wrapper
 from django.utils.log import getLogger
 from django.utils.decorators import classonlymethod
 
@@ -161,3 +161,18 @@ class RedirectView(View):
                             'request': self.request
                         })
             return http.HttpResponseGone()
+
+    def head(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
+    def options(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)

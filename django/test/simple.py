@@ -7,12 +7,6 @@ from django.test.utils import setup_test_environment, teardown_test_environment
 from django.test.testcases import OutputChecker, DocTestRunner, TestCase
 from django.utils import unittest
 
-try:
-    all
-except NameError:
-    from django.utils.itercompat import all
-
-
 __all__ = ('DjangoTestRunner', 'DjangoTestSuiteRunner', 'run_tests')
 
 # The module name for tests outside models.py
@@ -25,7 +19,7 @@ class DjangoTestRunner(unittest.TextTestRunner):
         import warnings
         warnings.warn(
             "DjangoTestRunner is deprecated; it's functionality is indistinguishable from TextTestRunner",
-            PendingDeprecationWarning
+            DeprecationWarning
         )
         super(DjangoTestRunner, self).__init__(*args, **kwargs)
 
@@ -361,12 +355,3 @@ class DjangoTestSuiteRunner(object):
         self.teardown_databases(old_config)
         self.teardown_test_environment()
         return self.suite_result(suite, result)
-
-def run_tests(test_labels, verbosity=1, interactive=True, failfast=False, extra_tests=None):
-    import warnings
-    warnings.warn(
-        'The run_tests() test runner has been deprecated in favor of DjangoTestSuiteRunner.',
-        DeprecationWarning
-    )
-    test_runner = DjangoTestSuiteRunner(verbosity=verbosity, interactive=interactive, failfast=failfast)
-    return test_runner.run_tests(test_labels, extra_tests=extra_tests)

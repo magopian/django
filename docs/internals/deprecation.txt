@@ -52,7 +52,10 @@ their deprecation, as per the :ref:`Django deprecation policy
           ``user.get_and_delete_messages()``), which have
           been deprecated since the 1.2 release, will be removed.  The
           :doc:`messages framework </ref/contrib/messages>` should be used
-          instead.
+          instead. The related ``messages`` variable returned by the
+          auth context processor will also be removed. Note that this
+          means that the admin application depends on the messages
+          context processor.
 
         * Authentication backends need to support the ``obj`` parameter for
           permission checking. The ``supports_object_permissions`` variable
@@ -170,6 +173,27 @@ their deprecation, as per the :ref:`Django deprecation policy
         * The ``MEDIA_URL`` or ``STATIC_URL`` settings are required to end
           with a trailing slash to ensure there is a consistent way to
           combine paths in templates.
+
+    * 1.6
+
+        * The compatibility modules ``django.utils.copycompat`` and
+          ``django.utils.hashcompat`` as well as the functions
+          ``django.utils.itercompat.all`` and ``django.utils.itercompat.any``
+          have been deprecated since the 1.4 release. The native versions
+          should be used instead.
+
+        * The :func:`~django.views.decorators.csrf.csrf_response_exempt` and
+          :func:`~django.views.decorators.csrf.csrf_view_exempt` decorators will
+          be removed. Since 1.4 ``csrf_response_exempt`` has been a no-op (it
+          returns the same function), and ``csrf_view_exempt`` has been a
+          synonym for ``django.views.decorators.csrf.csrf_exempt``, which should
+          be used to replace it.
+
+        * The :class:`~django.core.cache.backends.memcached.CacheClass` backend
+          was split into two in Django 1.3 in order to introduce support for
+          PyLibMC. The historical :class:`~django.core.cache.backends.memcached.CacheClass`
+          is now an alias for :class:`~django.core.cache.backends.memcached.MemcachedCache`.
+          In Django 1.6, the historical alias will be removed.
 
     * 2.0
         * ``django.views.defaults.shortcut()``. This function has been moved
