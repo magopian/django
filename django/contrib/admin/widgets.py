@@ -4,7 +4,7 @@ Form Widget classes specific to the Django admin site.
 
 import copy
 from django import forms
-from django.forms.widgets import RadioFieldRenderer
+from django.forms.widgets import RadioFieldRenderer, SelectMultiple
 from django.forms.util import flatatt
 from django.utils.html import escape
 from django.utils.text import truncate_words
@@ -14,6 +14,7 @@ from django.utils.encoding import force_unicode
 from django.conf import settings
 from django.core.urlresolvers import reverse, NoReverseMatch
 
+
 class FilteredSelectMultiple(forms.SelectMultiple):
     """
     A SelectMultiple with a JavaScript filter interface.
@@ -21,6 +22,9 @@ class FilteredSelectMultiple(forms.SelectMultiple):
     Note that the resulting JavaScript assumes that the jsi18n
     catalog has been loaded in the page
     """
+    
+    template_name = 'admin/forms/filtered_select_multiple.html'
+    
     class Media:
         js = (settings.ADMIN_MEDIA_PREFIX + "js/core.js",
               settings.ADMIN_MEDIA_PREFIX + "js/SelectBox.js",
@@ -31,17 +35,39 @@ class FilteredSelectMultiple(forms.SelectMultiple):
         self.is_stacked = is_stacked
         super(FilteredSelectMultiple, self).__init__(attrs, choices)
 
+    def get_context(self, name, value, attrs, choices):
+            context = super(SelectMultiple, self).get_context(name, value,
+                                                              attrs, choices)
+            context.update({
+                'verbose_name': self.verbose_name.replace('"', '\\"'),
+                'is_stacked':int(self.is_stacked),
+                'prefix': settings.ADMIN_MEDIA_PREFIX,
+                'value': map(force_unicode, value),
+                'multiple': True
+            })
+            return context
+
     def render(self, name, value, attrs=None, choices=()):
+        if value is None:
+            value = []
         if attrs is None: attrs = {}
         attrs['class'] = 'selectfilter'
-        if self.is_stacked: attrs['class'] += 'stacked'
-        output = [super(FilteredSelectMultiple, self).render(name, value, attrs, choices)]
-        output.append(u'<script type="text/javascript">addEvent(window, "load", function(e) {')
-        # TODO: "id_" is hard-coded here. This should instead use the correct
-        # API to determine the ID dynamically.
-        output.append(u'SelectFilter.init("id_%s", "%s", %s, "%s"); });</script>\n' % \
-            (name, self.verbose_name.replace('"', '\\"'), int(self.is_stacked), settings.ADMIN_MEDIA_PREFIX))
-        return mark_safe(u''.join(output))
+        if self.is_stacked: attrs['class'] += 'stacked'        
+        return super(SelectMultiple, self).render(name, value, attrs, choices)
+
+    # 
+    # def _render(self, name, value, attrs=None, choices=()):
+    #     if attrs is None: attrs = {}
+    #     attrs['class'] = 'selectfilter'
+    #     if self.is_stacked: attrs['class'] += 'stacked'
+    #     
+    #     output = [super(FilteredSelectMultiple, self).render(name, value, attrs, choices)]
+    #     output.append(u'<script type="text/javascript">addEvent(window, "load", function(e) {')
+    #     # TODO: "id_" is hard-coded here. This should instead use the correct
+    #     # API to determine the ID dynamically.
+    #     output.append(u'SelectFilter.init("id_%s", "%s", %s, "%s"); });</script>\n' % \
+    #         (name, self.verbose_name.replace('"', '\\"'), int(self.is_stacked), settings.ADMIN_MEDIA_PREFIX))
+    #     return mark_safe(u''.join(output))
 
 class AdminDateWidget(forms.DateInput):
     class Media:
@@ -63,6 +89,7 @@ class AdminSplitDateTime(forms.SplitDateTimeWidget):
     """
     A SplitDateTime Widget that has some admin-specific styling.
     """
+        
     def __init__(self, attrs=None):
         widgets = [AdminDateWidget, AdminTimeWidget]
         # Note that we're calling MultiWidget, not SplitDateTimeWidget, because
@@ -84,11 +111,9 @@ class AdminRadioFieldRenderer(RadioFieldRenderer):
 class AdminRadioSelect(forms.RadioSelect):
     renderer = AdminRadioFieldRenderer
 
-class AdminFileWidget(forms.ClearableFileInput):
-    template_with_initial = (u'<p class="file-upload">%s</p>'
-                            % forms.ClearableFileInput.template_with_initial)
-    template_with_clear = (u'<span class="clearable-file-input">%s</span>'
-                           % forms.ClearableFileInput.template_with_clear)
+class AdminFileWidget(forms.ClearableFileInput):    
+    template_name = 'admin/forms/admin_file.html'
+
 
 def url_params_from_lookup_dict(lookups):
     """
@@ -115,10 +140,14 @@ class ForeignKeyRawIdWidget(forms.TextInput):
     A Widget for displaying ForeignKeys in the "raw_id" interface rather than
     in a <select> box.
     """
+    
+#   template_name = 'admin/forms/foreignkey_raw_id.html'
+    
     def __init__(self, rel, attrs=None, using=None):
         self.rel = rel
         self.db = using
         super(ForeignKeyRawIdWidget, self).__init__(attrs)
+
 
     def render(self, name, value, attrs=None):
         if attrs is None:

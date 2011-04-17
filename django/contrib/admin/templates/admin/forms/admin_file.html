@@ -1,0 +1,5 @@
+{% if value.url %}<p class="file-upload">{{ initial_text }}: <a href="{{ value.url }}">{{ value }}</a>
+{% if not required %}<span class="clearable-file-input"><input type="checkbox" name="{{ checkbox_name }}" id="{{ checkbox_id }}" />
+<label for="{{ checkbox_id }}">{{ clear_checkbox_label }}</label></span>
+{% endif %}<br />
+{{ input_text }}: {% endif %}{% with "" as value %}{% include "forms/input.html" %}{% endwith %}{% if value.url %}</p>{% endif %}

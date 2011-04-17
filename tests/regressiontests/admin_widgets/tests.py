@@ -181,19 +181,19 @@ class AdminForeignKeyRawIdWidget(DjangoTestCase):
                 'Select a valid choice. That choice is not one of the available choices.')
 
 
-class FilteredSelectMultipleWidgetTest(TestCase):
+class FilteredSelectMultipleWidgetTest(DjangoTestCase):
     def test_render(self):
         w = FilteredSelectMultiple('test', False)
         self.assertEqual(
             conditional_escape(w.render('test', 'test')),
-            '<select multiple="multiple" name="test" class="selectfilter">\n</select><script type="text/javascript">addEvent(window, "load", function(e) {SelectFilter.init("id_test", "test", 0, "%(ADMIN_MEDIA_PREFIX)s"); });</script>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX}
+            '<select name="test" multiple="multiple" class="selectfilter">\n</select>\n<script type="text/javascript">addEvent(window, "load", function(e) {SelectFilter.init("id_test", "test", 0, "%(ADMIN_MEDIA_PREFIX)s"); });</script>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX}
         )
 
     def test_stacked_render(self):
         w = FilteredSelectMultiple('test', True)
         self.assertEqual(
             conditional_escape(w.render('test', 'test')),
-            '<select multiple="multiple" name="test" class="selectfilterstacked">\n</select><script type="text/javascript">addEvent(window, "load", function(e) {SelectFilter.init("id_test", "test", 1, "%(ADMIN_MEDIA_PREFIX)s"); });</script>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX}
+            '<select name="test" multiple="multiple" class="selectfilterstacked">\n</select>\n<script type="text/javascript">addEvent(window, "load", function(e) {SelectFilter.init("id_test", "test", 1, "%(ADMIN_MEDIA_PREFIX)s"); });</script>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX}
         )
 
 
@@ -232,12 +232,12 @@ class AdminFileWidgetTest(DjangoTestCase):
         w = AdminFileWidget()
         self.assertEqual(
             conditional_escape(w.render('test', album.cover_art)),
-            '<p class="file-upload">Currently: <a href="%(STORAGE_URL)salbums/hybrid_theory.jpg">albums\hybrid_theory.jpg</a> <span class="clearable-file-input"><input type="checkbox" name="test-clear" id="test-clear_id" /> <label for="test-clear_id">Clear</label></span><br />Change: <input type="file" name="test" /></p>' % { 'STORAGE_URL': default_storage.url('') },
+            '<p class="file-upload">Currently: <a href="%(STORAGE_URL)salbums/hybrid_theory.jpg">albums\hybrid_theory.jpg</a>\n<span class="clearable-file-input"><input type="checkbox" name="test-clear" id="test-clear_id" />\n<label for="test-clear_id">Clear</label></span>\n<br />\nChange: <input type="file" name="test" />\n</p>\n' % { 'STORAGE_URL': default_storage.url('') },
         )
 
         self.assertEqual(
             conditional_escape(w.render('test', SimpleUploadedFile('test', 'content'))),
-            '<input type="file" name="test" />',
+            '<input type="file" name="test" />\n\n',
         )
 
 
