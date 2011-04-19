@@ -181,19 +181,19 @@ class AdminForeignKeyRawIdWidget(DjangoTestCase):
                 'Select a valid choice. That choice is not one of the available choices.')
 
 
-class FilteredSelectMultipleWidgetTest(DjangoTestCase):
+class FilteredSelectMultipleWidgetTest(TestCase):
     def test_render(self):
         w = FilteredSelectMultiple('test', False)
         self.assertEqual(
             conditional_escape(w.render('test', 'test')),
-            '<select name="test" multiple="multiple" class="selectfilter">\n</select>\n<script type="text/javascript">addEvent(window, "load", function(e) {SelectFilter.init("id_test", "test", 0, "%(ADMIN_MEDIA_PREFIX)s"); });</script>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX}
+            '<select name="test" multiple="multiple" class="selectfilter">\n</select>\n\n<script type="text/javascript">addEvent(window, "load", function(e) {SelectFilter.init("id_test", "test", 0, "%(ADMIN_MEDIA_PREFIX)s"); });</script>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX}
         )
 
     def test_stacked_render(self):
         w = FilteredSelectMultiple('test', True)
         self.assertEqual(
             conditional_escape(w.render('test', 'test')),
-            '<select name="test" multiple="multiple" class="selectfilterstacked">\n</select>\n<script type="text/javascript">addEvent(window, "load", function(e) {SelectFilter.init("id_test", "test", 1, "%(ADMIN_MEDIA_PREFIX)s"); });</script>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX}
+            '<select name="test" multiple="multiple" class="selectfilterstacked">\n</select>\n\n<script type="text/javascript">addEvent(window, "load", function(e) {SelectFilter.init("id_test", "test", 1, "%(ADMIN_MEDIA_PREFIX)s"); });</script>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX}
         )
 
 
