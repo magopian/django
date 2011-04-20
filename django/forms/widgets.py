@@ -185,7 +185,7 @@ class Widget(object):
             'required': self.is_required,
         }
         context.update(self.get_context_data())
-        return context
+        return Context(context)
 
     def get_context_data(self):
         return {}
@@ -256,7 +256,7 @@ class Input(Widget):
         if value != '':
             # Only add the 'value' attribute if a value is non-empty.
             context['value'] = force_unicode(self._format_value(value))
-        return Context(context)
+        return context
 
 
     def _format_value(self, value):
@@ -408,7 +408,7 @@ class Textarea(Widget):
             'value': value,
         }
         context.update(self.get_context_data())
-        return Context(context)
+        return context
 
 
 class DateInput(Input):
