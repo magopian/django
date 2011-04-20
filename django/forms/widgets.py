@@ -399,9 +399,6 @@ class Textarea(Widget):
             default_attrs.update(attrs)
         super(Textarea, self).__init__(default_attrs)
 
-    def get_context_data(self):
-        return {}
-
     def get_context(self, name, value, attrs=None):
         if value is None:
             value = ''
