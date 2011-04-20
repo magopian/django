@@ -6,7 +6,6 @@ import copy
 from django import forms
 from django.forms.widgets import RadioFieldRenderer
 from django.forms.util import flatatt
-from django.template import Context
 from django.utils.html import escape
 from django.utils.text import truncate_words
 from django.utils.translation import ugettext as _
@@ -126,7 +125,6 @@ class ForeignKeyRawIdWidget(forms.TextInput):
     A Widget for displaying ForeignKeys in the "raw_id" interface rather than
     in a <select> box.
     """
-
     template_name = 'admin/forms/foreignkey_raw_id.html'
 
     def __init__(self, rel, attrs=None, using=None):
@@ -135,14 +133,13 @@ class ForeignKeyRawIdWidget(forms.TextInput):
         super(ForeignKeyRawIdWidget, self).__init__(attrs)
 
     def get_context(self, name, value, attrs=None):
-        if attrs is None:
-            attrs = {}
+        attrs = attrs or {}
         if "class" not in attrs:
             # The JavaScript looks for this hook.
             attrs['class'] = 'vForeignKeyRawIdAdminField'
 
-        context = super(ForeignKeyRawIdWidget, self).get_context(name, value,
-                                                                         attrs)
+        context = super(ForeignKeyRawIdWidget,
+                        self).get_context(name, value, attrs)
 
         context['related_url'] = '../../../%s/%s/' % (
             self.rel.to._meta.app_label, self.rel.to._meta.object_name.lower())
@@ -151,12 +148,13 @@ class ForeignKeyRawIdWidget(forms.TextInput):
         url = u''
         if params:
             url = u'?' + u'&amp;'.join([u'%s=%s' % (k, v) for k, v in params.items()])
-        context['url'] = url
-        context['alt'] = _('Lookup')
-        context['admin_media_prefix'] = settings.ADMIN_MEDIA_PREFIX
-        context['label'] = mark_safe(self.label_for_value(value))
-
-        return Context(context)
+        context.update({
+            'url': url,
+            'alt': _('Lookup'),
+            'admin_media_prefix': settings.ADMIN_MEDIA_PREFIX,
+            'label': mark_safe(self.label_for_value(value)),
+        })
+        return context
 
     def base_url_parameters(self):
         return url_params_from_lookup_dict(self.rel.limit_choices_to)
