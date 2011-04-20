@@ -410,10 +410,6 @@ class Textarea(Widget):
         context.update(self.get_context_data())
         return Context(context)
 
-    def render(self, name, value, attrs=None):
-        context = self.get_context(name, value, attrs)
-        return loader.render_to_string(self.template_name, context)
-
 
 class DateInput(Input):
     input_type = 'text'
