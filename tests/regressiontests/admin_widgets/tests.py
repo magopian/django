@@ -202,7 +202,7 @@ class AdminSplitDateTimeWidgetTest(TestCase):
         w = AdminSplitDateTime()
         self.assertEqual(
             conditional_escape(w.render('test', datetime(2007, 12, 1, 9, 30))),
-            '<p class="datetime">Date: <input value="2007-12-01" type="text" class="vDateField" name="test_0" size="10" /><br />Time: <input value="09:30:00" type="text" class="vTimeField" name="test_1" size="8" /></p>',
+            '<p class="datetime">Date: <input type="text" name="test_0" value="2007-12-01" class="vDateField" size="10" />\n<br />Time: <input type="text" name="test_1" value="09:30:00" class="vTimeField" size="8" />\n</p>',
         )
 
     def test_localization(self):
