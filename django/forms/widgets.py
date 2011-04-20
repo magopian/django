@@ -399,9 +399,6 @@ class Textarea(Widget):
             default_attrs.update(attrs)
         super(Textarea, self).__init__(default_attrs)
 
-    def get_context_data(self):
-        return {}
-
     def get_context(self, name, value, attrs=None):
         if value is None:
             value = ''
@@ -412,10 +409,6 @@ class Textarea(Widget):
         }
         context.update(self.get_context_data())
         return Context(context)
-
-    def render(self, name, value, attrs=None):
-        context = self.get_context(name, value, attrs)
-        return loader.render_to_string(self.template_name, context)
 
 
 class DateInput(Input):
