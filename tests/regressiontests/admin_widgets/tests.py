@@ -303,12 +303,12 @@ class ManyToManyRawIdWidgetTest(DjangoTestCase):
         w = ManyToManyRawIdWidget(rel)
         self.assertEqual(
             conditional_escape(w.render('test', [m1.pk, m2.pk], attrs={})),
-            '<input type="text" name="test" value="%(m1pk)s,%(m2pk)s" class="vManyToManyRawIdAdminField" /><a href="../../../admin_widgets/member/" class="related-lookup" id="lookup_id_test" onclick="return showRelatedObjectLookupPopup(this);"> <img src="%(ADMIN_MEDIA_PREFIX)simg/admin/selector-search.gif" width="16" height="16" alt="Lookup" /></a>' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX, "m1pk": m1.pk, "m2pk": m2.pk},
+            '<input type="text" name="test" value="%(m1pk)s,%(m2pk)s" class="vManyToManyRawIdAdminField" />\n\n<a href="../../../admin_widgets/member/" class="related-lookup" id="lookup_id_test" onclick="return showRelatedObjectLookupPopup(this);"> <img src="%(ADMIN_MEDIA_PREFIX)simg/admin/selector-search.gif" width="16" height="16" alt="Lookup" /></a>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX, "m1pk": m1.pk, "m2pk": m2.pk},
         )
 
         self.assertEqual(
             conditional_escape(w.render('test', [m1.pk])),
-            '<input type="text" name="test" value="%(m1pk)s" class="vManyToManyRawIdAdminField" /><a href="../../../admin_widgets/member/" class="related-lookup" id="lookup_id_test" onclick="return showRelatedObjectLookupPopup(this);"> <img src="%(ADMIN_MEDIA_PREFIX)simg/admin/selector-search.gif" width="16" height="16" alt="Lookup" /></a>' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX, "m1pk": m1.pk},
+            '<input type="text" name="test" value="%(m1pk)s" class="vManyToManyRawIdAdminField" />\n\n<a href="../../../admin_widgets/member/" class="related-lookup" id="lookup_id_test" onclick="return showRelatedObjectLookupPopup(this);"> <img src="%(ADMIN_MEDIA_PREFIX)simg/admin/selector-search.gif" width="16" height="16" alt="Lookup" /></a>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX, "m1pk": m1.pk},
         )
 
         self.assertEqual(w._has_changed(None, None), False)
