@@ -252,7 +252,7 @@ class ForeignKeyRawIdWidgetTest(DjangoTestCase):
         w = ForeignKeyRawIdWidget(rel)
         self.assertEqual(
             conditional_escape(w.render('test', band.pk, attrs={})),
-            '<input type="text" name="test" value="%(bandpk)s" class="vForeignKeyRawIdAdminField" /><a href="../../../admin_widgets/band/?t=id" class="related-lookup" id="lookup_id_test" onclick="return showRelatedObjectLookupPopup(this);"> <img src="%(ADMIN_MEDIA_PREFIX)simg/admin/selector-search.gif" width="16" height="16" alt="Lookup" /></a>&nbsp;<strong>Linkin Park</strong>' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX, "bandpk": band.pk},
+            '<input type="text" name="test" value="%(bandpk)s" class="vForeignKeyRawIdAdminField" />\n\n<a href="../../../admin_widgets/band/?t=id" class="related-lookup" id="lookup_id_test" onclick="return showRelatedObjectLookupPopup(this);"> <img src="%(ADMIN_MEDIA_PREFIX)simg/admin/selector-search.gif" width="16" height="16" alt="Lookup" /></a>&nbsp;<strong>Linkin Park</strong>\n' % {"ADMIN_MEDIA_PREFIX": settings.ADMIN_MEDIA_PREFIX, "bandpk": band.pk},
         )
 
     def test_relations_to_non_primary_key(self):
